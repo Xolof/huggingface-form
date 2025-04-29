@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16x16.png">
+    <link rel="stylesheet" type="text/css" href="css/styles.css">
+    <title>Huggingface AI form</title>
+</head>
+<body>
+    <h1>Huggingface AI form</h1>
+<?php
+require __DIR__ . "/form.php";
