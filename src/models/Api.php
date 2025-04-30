@@ -20,7 +20,7 @@ class Api
         }
     }
 
-    private function getPayload()
+    private function getPayload(): array
     {
         return [
             "messages" => [
@@ -54,7 +54,7 @@ class Api
         }
     }
 
-    public function makeCurlRequest ()
+    public function makeCurlRequest(): string
     {
         $hfToken = $this->getToken();
         $data = $this->getPayload();
