@@ -2,8 +2,6 @@
 
 $question = filter_input(INPUT_GET, 'question', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-require __DIR__ . "/../templates/header.php";
-
 $hfToken = file_get_contents(__DIR__ . "/../../API_TOKEN.txt");
 
 $url = "https://router.huggingface.co/nebius/v1/chat/completions";
@@ -21,6 +19,8 @@ $data = [
 
 $fetchWentWrongMessage = "Something went wrong when trying to fetch the data.";
 
+$res = "";
+
 if (isset($question)) {
     try {
         $res = doCurl($question, $url, $hfToken, $data);
@@ -37,8 +37,7 @@ if (isset($question)) {
     }
 
     $res = $res->choices[0]->message->content;
-
-    echo makeMarkdown($res);
+    $res = makeMarkdown($res);
 }
 
-require __DIR__ . "/../templates/footer.html";
+require __DIR__ . "/../views/homeView.php";

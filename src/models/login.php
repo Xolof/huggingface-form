@@ -1,3 +1,3 @@
 <?php
 
-echo "login";
+require __DIR__ . "/../views/loginView.php";

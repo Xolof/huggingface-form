@@ -1,3 +1,3 @@
 <?php
 
- echo "blog";
+require __DIR__ . "/../views/blogView.php";

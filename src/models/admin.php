@@ -1,3 +1,3 @@
 <?php
 
-echo "admin";
+require __DIR__ . "/../views/adminView.php";
