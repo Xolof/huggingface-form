@@ -9,5 +9,13 @@
 </head>
 <body>
     <h1>Huggingface AI form</h1>
+    <nav>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/admin">Admin</a></li>
+            <li><a href="/login">Login</a></li>
+            <li><a href="/blog">Blog</a></li>
+        </ul>
+    </nav>
 <?php
 require __DIR__ . "/form.php";
