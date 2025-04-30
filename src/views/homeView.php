@@ -2,7 +2,7 @@
 
 require __DIR__ . "/../templates/header.php";
 
-require __DIR__ . "/../templates/form.php";
+require __DIR__ . "/../templates/apiForm.php";
 
 echo $markdown;
 
