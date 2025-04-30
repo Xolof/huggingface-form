@@ -38,4 +38,13 @@ input[type=submit] {
     100% {
         transform: rotate(360deg);
     }
-} 
+}
+
+.main_nav ul {
+    padding-left: 0;
+}
+
+.main_nav ul li {
+    display: inline;
+    margin-right: 0.8em;
+}
