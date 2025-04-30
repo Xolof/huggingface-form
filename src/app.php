@@ -3,45 +3,28 @@
 require __DIR__ . '/../vendor/autoload.php';
 require __DIR__ . "/functions/functions.php";
 
-$question = filter_input(INPUT_GET, 'question', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+$uri = $_SERVER['REQUEST_URI'];
 
-require __DIR__ . "/templates/header.php";
-
-$hfToken = file_get_contents(__DIR__ . "/../API_TOKEN.txt");
-
-$url = "https://router.huggingface.co/nebius/v1/chat/completions";
-
-$data = [
-    "messages" => [
-        [
-            "role" => "user",
-            "content" => $question
-        ]
-    ],
-    "model" => "google/gemma-3-27b-it",
-    "stream" => false
-];
-
-$fetchWentWrongMessage = "Something went wrong when trying to fetch the data.";
-
-if (isset($question)) {
-    try {
-        $res = doCurl($question, $url, $hfToken, $data);
-        $res = json_decode($res);
-    } catch(Exception $e) {
-        myLog($e);
-        exit($fetchWentWrongMessage);
-    }
-
-    myLog($res);
-
-    if (isset($res->code) && $res->code == 404) {
-        exit($fetchWentWrongMessage);
-    }
-
-    $res = $res->choices[0]->message->content;
-
-    echo makeMarkdown($res);
+if ($positionQuestionMark = strpos($uri, "?")) {
+    $uri = substr($uri, 0, $positionQuestionMark);
 }
 
-require __DIR__ . "/templates/footer.html";
+switch ($uri) {
+    case '/':
+        require __DIR__ . "/models/home.php";
+        break;
+    case '/blog':
+        require __DIR__ . "/models/blog.php";
+        break;
+    case '/admin':
+        require __DIR__ . "/models/admin.php";
+        break;
+    case '/login':
+        require __DIR__ . "/models/login.php";
+        break;
+    default:
+        http_response_code(404);
+        echo '404 Not Found';
+}
+
+exit;
