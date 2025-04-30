@@ -22,19 +22,21 @@ $data = [
     "stream" => false
 ];
 
+$fetchWentWrongMessage = "Something went wrong when trying to fetch the data.";
+
 if (isset($question)) {
     try {
         $res = doCurl($question, $url, $hfToken, $data);
         $res = json_decode($res);
     } catch(Exception $e) {
         myLog($e);
-        exit("Something went wrong when trying to fetch the data.");
+        exit($fetchWentWrongMessage);
     }
 
     myLog($res);
 
     if (isset($res->code) && $res->code == 404) {
-        exit("Something went wrong when trying to fetch the data.");
+        exit($fetchWentWrongMessage);
     }
 
     $res = $res->choices[0]->message->content;
