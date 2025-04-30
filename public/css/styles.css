@@ -4,3 +4,38 @@ body {
     margin: 0 auto;
     padding: 1em;
 }
+
+textarea#question {
+    min-width: 100%;
+    max-width: 100%;
+    min-height: 100px;
+}
+
+input[type=submit] {
+    padding: 0.4em 0.6em;
+    cursor: pointer;
+    margin-top: 4px;
+}
+
+.spinner {
+    opacity: 0;
+    width: 32px;
+    height: 32px;
+    border: 5px solid #180c8a;
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+    position: relative;
+    left: 74px;
+    top: -34px;
+    }
+
+    @keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+} 
