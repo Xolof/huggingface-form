@@ -9,11 +9,35 @@
 </head>
 <body>
     <h1>Huggingface AI form</h1>
+    <?php
+        $loggedInUser = $_SESSION["username"];
+    ?>
     <nav class="main_nav">
         <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/admin">Admin</a></li>
-            <li><a href="/login">Login</a></li>
-            <li><a href="/blog">Blog</a></li>
+            <li>
+                <a href="/"
+                class="<?= $uri === '/' ? 'activeRoute' : null ?>"
+                >Home</a>
+            </li>
+            <li>
+                <a href="/blog"
+                class="<?= $uri === '/blog' ? 'activeRoute' : null ?>"
+                >Blog</a></li>
+            <?php if ($loggedInUser): ?>
+                <li>
+                    <a href="/admin"
+                    class="<?= $uri === '/admin' ? 'activeRoute' : null ?>"
+                    >Admin</a></li>
+            <?php endif; ?>
+            <?php if (!$loggedInUser): ?>
+                <li><a href="/login"
+                class="<?= $uri === '/login' ? 'activeRoute' : null ?>"
+                >Login</a></li>
+            <?php endif; ?>
+            <?php if ($loggedInUser): ?>
+                <li><a href="/logout"
+                class="<?= $uri === '/logout' ? 'activeRoute' : null ?>"
+                >Logout</a></li>
+            <?php endif; ?>
         </ul>
     </nav>
