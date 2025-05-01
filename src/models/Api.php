@@ -36,7 +36,7 @@ class Api
         ];
     }
 
-    private function doCurl($question, $url, $hfToken, $data): string
+    private function doCurl(string $question, string $url, string $hfToken, array $data): string
     {
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

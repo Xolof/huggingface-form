@@ -1,11 +1,11 @@
 <?php
 
-function myLog($text): void
+function myLog(mixed $object): void
 {
-    file_put_contents(__DIR__ . "/../../huggingface.log", json_encode($text) . "\n", FILE_APPEND);
+    file_put_contents(__DIR__ . "/../../huggingface.log", json_encode($object) . "\n", FILE_APPEND);
 }
 
-function makeMarkdown($text): string
+function makeMarkdown(string $text): string
 {
     $parsedown = new Parsedown();
     // prevent raw HTML in the Markdown from being rendered (for security, e.g., to avoid XSS attacks)
