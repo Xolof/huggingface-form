@@ -8,7 +8,7 @@
     <title>Huggingface AI form</title>
 </head>
 <body>
-    <h1>Huggingface AI form</h1>
+    <h1>AI form</h1>
     <?php
     $loggedInUser = $_SESSION["username"] ?? null;
     $uri = $uri ?? null;
