@@ -8,7 +8,9 @@ class Db
 {
     private SQLite3 $connection;
 
-    public function __construct() {}
+    public function __construct()
+    {
+    }
 
     public function connect(): void
     {

@@ -16,27 +16,27 @@
         <ul>
             <li>
                 <a href="/"
-                class="<?= $uri === '/' ? 'activeRoute' : null ?>"
+                class="<?php echo $uri === '/' ? 'activeRoute' : null ?>"
                 >Home</a>
             </li>
             <li>
                 <a href="/blog"
-                class="<?= $uri === '/blog' ? 'activeRoute' : null ?>"
+                class="<?php echo $uri === '/blog' ? 'activeRoute' : null ?>"
                 >Blog</a></li>
-            <?php if ($loggedInUser): ?>
+            <?php if ($loggedInUser) : ?>
                 <li>
                     <a href="/admin"
-                    class="<?= $uri === '/admin' ? 'activeRoute' : null ?>"
+                    class="<?php echo $uri === '/admin' ? 'activeRoute' : null ?>"
                     >Admin</a></li>
             <?php endif; ?>
-            <?php if (!$loggedInUser): ?>
+            <?php if (!$loggedInUser) : ?>
                 <li><a href="/login"
-                class="<?= $uri === '/login' ? 'activeRoute' : null ?>"
+                class="<?php echo $uri === '/login' ? 'activeRoute' : null ?>"
                 >Login</a></li>
             <?php endif; ?>
-            <?php if ($loggedInUser): ?>
+            <?php if ($loggedInUser) : ?>
                 <li><a href="/logout"
-                class="<?= $uri === '/logout' ? 'activeRoute' : null ?>"
+                class="<?php echo $uri === '/logout' ? 'activeRoute' : null ?>"
                 >Logout</a></li>
             <?php endif; ?>
         </ul>
