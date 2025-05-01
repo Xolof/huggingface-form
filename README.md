@@ -15,4 +15,6 @@ Make a file named `config.php` in the project root directory. Add the token and 
     define("SQLITE_DB_PATH", "/path/to/your/sqlite/file.db");
     define("HF_API_TOKEN", "yourApiToken");
 
-You can now start the project with the PHP dev server `php -S localhost:3000 -t web/`.
+## Start the project
+
+You can now start the project with the PHP dev server `php -S localhost:3000 -t public/`.
