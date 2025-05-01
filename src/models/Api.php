@@ -66,13 +66,13 @@ class Api
             $res = json_decode($res);
         } catch(Exception $e) {
             myLog($e);
-            exit($fetchWentWrongMessage);
+            exit($this->fetchWentWrongMessage);
         }
     
         myLog($res);
     
         if (isset($res->code) && $res->code == 404) {
-            exit($fetchWentWrongMessage);
+            exit($this->fetchWentWrongMessage);
         }
     
         return $res->choices[0]->message->content;
