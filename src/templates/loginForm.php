@@ -3,6 +3,6 @@
     <input type=email required id="email" name="email"><br>
     <label for="password">Password</label><br>
     <input type=password required id="password" name="password"><br>
-    <input type="submit" value="Submit" id="submitFormButton">
+    <input type="submit" value="Login" id="submitFormButton">
     <div class="spinner"></div>
 </form>
