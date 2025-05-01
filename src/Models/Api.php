@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Helpers\Logger;
+
 class Api
 {
     private $url = "https://router.huggingface.co/nebius/v1/chat/completions";
@@ -11,13 +13,14 @@ class Api
     public function __construct(string $question)
     {
         $this->question = $question;
+        $this->logger = new Logger();
     }
 
     private function getToken(): string
     {
         $token = file_get_contents(__DIR__ . "/../../API_TOKEN.txt");
         if(!$token) {
-            myLog("Could not find the API token file.");
+            $this->logger->log("Could not find the API token file.");
             http_response_code(500);
             exit($this->fetchWentWrongMessage);
         };
@@ -67,11 +70,11 @@ class Api
             $res = $this->doCurl($this->question, $this->url, $hfToken, $data);
             $res = json_decode($res);
         } catch(Exception $e) {
-            myLog($e);
+            $this->logger->log($e);
             exit($this->fetchWentWrongMessage);
         }
     
-        myLog($res);
+        $this->logger->log($res);
     
         if (isset($res->code) && $res->code == 404) {
             exit($this->fetchWentWrongMessage);

@@ -1,8 +1,8 @@
 <?php
 
 require __DIR__ . '/../vendor/autoload.php';
-require __DIR__ . "/functions/functions.php";
 use App\Models\Api;
+use App\Helpers\Markdowner;
 
 $uri = $_SERVER['REQUEST_URI'];
 
@@ -10,13 +10,16 @@ if ($positionQuestionMark = strpos($uri, "?")) {
     $uri = substr($uri, 0, $positionQuestionMark);
 }
 
+$parsedown = new Parsedown();
+$markdowner = new Markdowner($parsedown);
+
 switch ($uri) {
     case '/':
         $question = filter_input(INPUT_GET, 'question', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         if (isset($question)) {
             $api = new Api($question);
             $res = $api->makeCurlRequest();
-            $markdown = makeMarkdown($res);
+            $markdown = $markdowner->print($res);
         }
         require __DIR__ . "/views/homeView.php";
         break;
