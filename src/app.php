@@ -45,15 +45,11 @@ switch ($uri) {
         $password = trim(filter_input(INPUT_POST, 'password', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
 
         $user = new User();
-        // TODO: Move logic to the User class.
         if (isset($email) && $email != "") {
             $userData = $user->getByEmail($email);
             if (count($userData)) {
                 if (password_verify($password, $userData["password"])) {
-                    $_SESSION['user_id'] = $userData["id"];
-                    $_SESSION['username'] = $userData["name"];
-                    header("Location: /admin");
-                    exit;
+                    $user->login($userData["id"], $userData["name"]);
                 } else {
                     echo "<br>Could not login, check your password.";
                 }
@@ -66,11 +62,8 @@ switch ($uri) {
         break;
 
     case '/logout':
-        session_start();
-        session_unset();
-        session_destroy();
-        header("Location: /");
-        exit;
+        $user = new User();
+        $user->logout();
         break;
 
     default:
