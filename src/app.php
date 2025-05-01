@@ -1,5 +1,6 @@
 <?php
 
+require_once __DIR__ . '/../config.php';
 require __DIR__ . '/../vendor/autoload.php';
 use App\Models\Api;
 use App\Helpers\Markdowner;

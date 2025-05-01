@@ -1,4 +1,5 @@
-API_TOKEN.txt
+config.php
+hff.db
 .ddev
 huggingface.log
 vendor/
