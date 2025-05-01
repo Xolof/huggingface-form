@@ -6,6 +6,8 @@ use \Parsedown;
 
 class Markdowner
 {
+    private Parsedown $parsedown;
+
     public function __construct()
     {
         $this->parsedown = new Parsedown();
