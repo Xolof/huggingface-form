@@ -16,8 +16,7 @@ if ($positionQuestionMark = strpos($uri, "?")) {
     $uri = substr($uri, 0, $positionQuestionMark);
 }
 
-$parsedown = new Parsedown();
-$markdowner = new Markdowner($parsedown);
+$markdowner = new Markdowner();
 
 switch ($uri) {
     case '/':
