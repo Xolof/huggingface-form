@@ -11,6 +11,7 @@
     <h1>Huggingface AI form</h1>
     <?php
     $loggedInUser = $_SESSION["username"] ?? null;
+    $uri = $uri ?? null;
     ?>
     <nav class="main_nav">
         <ul>
