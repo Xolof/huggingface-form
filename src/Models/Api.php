@@ -18,13 +18,12 @@ class Api
 
     private function getToken(): string
     {
-        $token = file_get_contents(__DIR__ . "/../../API_TOKEN.txt");
-        if(!$token) {
-            $this->logger->log("Could not find the API token file.");
+        if(!defined("HF_API_TOKEN")) {
+            $this->logger->log("Could not get the API token.");
             http_response_code(500);
             exit($this->fetchWentWrongMessage);
         };
-        return $token;
+        return HF_API_TOKEN;
     }
 
     private function getPayload(): array
