@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Models;
+
 class Api
 {
     private $url = "https://router.huggingface.co/nebius/v1/chat/completions";

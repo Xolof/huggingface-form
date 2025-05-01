@@ -2,7 +2,7 @@
 
 require __DIR__ . '/../vendor/autoload.php';
 require __DIR__ . "/functions/functions.php";
-require __DIR__ . "/models/Api.php";
+use App\Models\Api;
 
 $uri = $_SERVER['REQUEST_URI'];
 
