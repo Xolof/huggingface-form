@@ -26,15 +26,18 @@ class Post
     public function add(int $userId, string $text, int $timeToPublish): bool
     {
         $this->db->connect();
+        return false;
     }
 
     public function update(int $id): bool
     {
         $this->db->connect();
+        return false;
     }
 
     public function delete(int $id): bool
     {
         $this->db->connect();
+        return false;
     }
 }
