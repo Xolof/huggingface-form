@@ -5,7 +5,7 @@
         name="question"
         rows="4"
         cols="50"
-    ><?php echo isset($question) ? strip_tags($question) : null ?></textarea><br>
+    ><?= isset($question) ? strip_tags($question) : null ?></textarea><br>
     <input type="submit" value="Go" id="submitFormButton">
     <div class="spinner"></div>
 </form>
