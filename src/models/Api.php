@@ -13,11 +13,13 @@ class Api
 
     private function getToken(): string
     {
-        try {
-            return file_get_contents(__DIR__ . "/../../API_TOKEN.txt");
-        } catch (Exception $e) {
-            myLog("Could not get the API token.");
-        }
+        $token = file_get_contents(__DIR__ . "/../../API_TOKEN.txt");
+        if(!$token) {
+            myLog("Could not find the API token file.");
+            http_response_code(500);
+            exit($this->fetchWentWrongMessage);
+        };
+        return $token;
     }
 
     private function getPayload(): array
