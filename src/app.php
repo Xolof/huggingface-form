@@ -47,14 +47,14 @@ switch ($uri) {
         break;
 
     case '/login':
-        $email = trim(filter_input(INPUT_POST, 'email', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
-        $password = trim(filter_input(INPUT_POST, 'password', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
+        $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
         $user = new User();
         if (isset($email) && $email != "") {
-            $userData = $user->getByEmail($email);
+            $userData = $user->getByEmail(trim($email));
             if (count($userData)) {
-                if (password_verify($password, $userData["password"])) {
+                if (password_verify(trim($password), $userData["password"])) {
                     $user->login($userData["id"], $userData["name"]);
                 } else {
                     echo "<br>Could not login, check your password.";
