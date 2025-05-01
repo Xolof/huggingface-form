@@ -8,4 +8,6 @@ require __DIR__ . "/../templates/header.php";
 
 <?php
 
+require __DIR__ . "/../templates/loginForm.php";
+
 require __DIR__ . "/../templates/footer.html";
