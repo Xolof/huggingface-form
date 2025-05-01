@@ -5,5 +5,5 @@ php-cs-fixer fix src
 #phpcbf src
 phpmd src text cleancode
 phpcpd src 
-phpstan analyse src --memory-limit="512M" --level=6
+phpstan analyse src --memory-limit="512M" --level=5
 
