@@ -6,6 +6,8 @@ use App\Models\Db;
 
 class User
 {
+    private Db $db;
+
     public function __construct()
     {
         $this->db = new Db();

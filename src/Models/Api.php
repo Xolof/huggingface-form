@@ -3,12 +3,17 @@
 namespace App\Models;
 
 use App\Helpers\Logger;
+use \Exception;
 
 class Api
 {
-    private $url = "https://router.huggingface.co/nebius/v1/chat/completions";
+    private string $url = "https://router.huggingface.co/nebius/v1/chat/completions";
 
-    private $fetchWentWrongMessage = "Something went wrong when trying to fetch the data.";
+    private string $fetchWentWrongMessage = "Something went wrong when trying to fetch the data.";
+
+    private string $question;
+
+    private Logger $logger;
 
     public function __construct(string $question)
     {

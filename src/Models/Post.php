@@ -4,6 +4,8 @@ namespace App\Models;
 
 class Post
 {
+    private Db $db;
+
     public function __construct()
     {
         $this->db = new Db();

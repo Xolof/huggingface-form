@@ -6,9 +6,11 @@ use \SQLite3;
 
 class Db
 {
+    private SQLite3 $connection;
+
     public function __construct() {}
 
-    public function connect()
+    public function connect(): void
     {
         $this->connection = new SQLite3(SQLITE_DB_PATH);
     }
