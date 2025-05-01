@@ -4,6 +4,7 @@ require_once __DIR__ . '/../config.php';
 require __DIR__ . '/../vendor/autoload.php';
 use App\Models\Api;
 use App\Models\User;
+use App\Models\Post;
 use App\Helpers\Markdowner;
 
 session_start();
@@ -29,6 +30,11 @@ switch ($uri) {
         break;
 
     case '/blog':
+        $post = new Post();
+        $allPosts = $post->getAll();
+        echo "<pre>";
+        var_dump($allPosts);
+        var_dump($post->getById(1));
         require __DIR__ . "/views/blogView.php";
         break;
 
