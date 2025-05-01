@@ -30,6 +30,9 @@ switch ($uri) {
         break;
 
     case '/login':
+        $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
         require __DIR__ . "/views/loginView.php";
         break;
 
