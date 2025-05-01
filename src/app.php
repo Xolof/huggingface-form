@@ -8,7 +8,9 @@ use App\Models\Api;
 use App\Models\Post;
 use App\Models\User;
 
-session_start();
+if (session_status() != 2) {
+    session_start();
+}
 
 $uri = $_SERVER['REQUEST_URI'];
 
