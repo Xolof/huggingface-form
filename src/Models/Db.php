@@ -2,13 +2,15 @@
 
 namespace App\Models;
 
+use \SQLite3;
+
 class Db
 {
     public function __construct() {}
 
     public function connect()
     {
-        $this->connection = new \SQLite3(SQLITE_DB_PATH);
+        $this->connection = new SQLite3(SQLITE_DB_PATH);
     }
 
     public function runQuery(string $query): array

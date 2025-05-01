@@ -2,11 +2,13 @@
 
 namespace App\Helpers;
 
+use \Parsedown;
+
 class Markdowner
 {
-    public function __construct(\Parsedown $parsedown)
+    public function __construct(Parsedown $parsedown)
     {
-        $this->parsedown = new \Parsedown();
+        $this->parsedown = new Parsedown();
     }
 
     function print(string $text): string
