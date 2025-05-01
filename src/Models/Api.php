@@ -18,7 +18,7 @@ class Api
 
     private function getToken(): string
     {
-        if(!defined("HF_API_TOKEN")) {
+        if (!defined("HF_API_TOKEN")) {
             $this->logger->log("Could not get the API token.");
             http_response_code(500);
             exit($this->fetchWentWrongMessage);
@@ -68,19 +68,17 @@ class Api
         try {
             $res = $this->doCurl($this->question, $this->url, $hfToken, $data);
             $res = json_decode($res);
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             $this->logger->log($e);
             exit($this->fetchWentWrongMessage);
         }
-    
+
         $this->logger->log($res);
-    
+
         if (isset($res->code) && $res->code == 404) {
             exit($this->fetchWentWrongMessage);
         }
-    
+
         return $res->choices[0]->message->content;
-    }   
+    }
 }
-
-

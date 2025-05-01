@@ -10,7 +10,7 @@
 <body>
     <h1>Huggingface AI form</h1>
     <?php
-        $loggedInUser = $_SESSION["username"];
+    $loggedInUser = $_SESSION["username"];
     ?>
     <nav class="main_nav">
         <ul>
