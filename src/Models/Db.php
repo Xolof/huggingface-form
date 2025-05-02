@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use \SQLite3;
+use SQLite3;
 
 class Db
 {
