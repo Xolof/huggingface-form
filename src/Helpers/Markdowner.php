@@ -15,7 +15,7 @@ class Markdowner
 
     public function print(string $text): string
     {
-        // prevent raw HTML in the Markdown from being rendered (for security, e.g., to avoid XSS attacks)
+        // Prevent raw HTML in the Markdown from being rendered (for security, e.g., to avoid XSS attacks).
         $this->parsedown->setSafeMode(true);
         $this->parsedown->setUrlsLinked(true);
         $html = $this->parsedown->text($text);
