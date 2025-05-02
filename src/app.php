@@ -34,9 +34,6 @@ case '/':
 case '/blog':
     $post = new Post();
     $allPosts = $post->getAll();
-    echo "<pre>";
-    var_dump($allPosts);
-    var_dump($post->getById(1));
     include __DIR__ . "/views/blogView.php";
     break;
 
