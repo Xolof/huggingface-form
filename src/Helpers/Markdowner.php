@@ -13,7 +13,7 @@ class Markdowner
         $this->parsedown = new Parsedown();
     }
 
-    function print(string $text): string
+    public function print(string $text): string
     {
         // prevent raw HTML in the Markdown from being rendered (for security, e.g., to avoid XSS attacks)
         $this->parsedown->setSafeMode(true);
