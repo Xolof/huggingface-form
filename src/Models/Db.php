@@ -24,6 +24,9 @@ class Db
         $result = $this->connection->query($query);
         $array = [];
         while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
+            if (!$row) {
+                throw new Exception($this->connection->lastErrorMsg());
+            }
             $array[] = $row;
         }
         return $array;
@@ -38,6 +41,9 @@ class Db
         }
 
         $result = $stmt->execute();
+        if (!$result) {
+            throw new Exception($this->connection->lastErrorMsg());
+        }
 
         if ($isFetch) {
             $array = $result->fetchArray(SQLITE3_ASSOC);
