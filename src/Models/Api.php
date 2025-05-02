@@ -3,13 +3,11 @@
 namespace App\Models;
 
 use App\Helpers\Logger;
-use Exception;
+use App\Exceptions\CurlErrorException;
 
 class Api
 {
     private string $url = "https://router.huggingface.co/nebius/v1/chat/completions";
-
-    private string $fetchWentWrongMessage = "Something went wrong when trying to fetch the data.";
 
     private string $question;
 
@@ -25,8 +23,7 @@ class Api
     {
         if (!defined("HF_API_TOKEN")) {
             $this->logger->log("Could not get the API token.");
-            http_response_code(500);
-            exit($this->fetchWentWrongMessage);
+            throw new \Exception("Could not get the API token.");
         };
         return HF_API_TOKEN;
     }
@@ -60,13 +57,8 @@ class Api
         );
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
         $response = curl_exec($ch);
-
-        if ($response === false) {
-            throw new Exception(curl_error($ch));
-        } else {
-            curl_close($ch);
-            return $response;
-        }
+        curl_close($ch);
+        return $response;
     }
 
     public function makeCurlRequest(): string
@@ -77,15 +69,15 @@ class Api
         try {
             $res = $this->doCurl($this->question, $this->url, $hfToken, $data);
             $res = json_decode($res);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->logger->log($e);
-            exit($this->fetchWentWrongMessage);
+            throw new CurlErrorException("Something went wrong when trying to make a call to the API: " . $e);
         }
 
         $this->logger->log($res);
 
         if (isset($res->code) && $res->code == 404) {
-            exit($this->fetchWentWrongMessage);
+            throw new CurlErrorException("Something went wrong when trying to make a call to the API: " . $res);
         }
 
         return $res->choices[0]->message->content;

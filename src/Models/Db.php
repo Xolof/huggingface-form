@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use SQLite3;
-use \Exception;
+use App\Exceptions\DatabaseQueryException;
 
 class Db
 {
@@ -25,7 +25,7 @@ class Db
         $array = [];
         while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
             if (!$row) {
-                throw new Exception($this->connection->lastErrorMsg());
+                throw new DatabaseQueryException("Something went wrong when executing a query towards the sqlite3 database: " . $this->connection->lastErrorMsg());
             }
             $array[] = $row;
         }
@@ -42,7 +42,7 @@ class Db
 
         $result = $stmt->execute();
         if (!$result) {
-            throw new Exception($this->connection->lastErrorMsg());
+            throw new DatabaseQueryException("Something went wrong when executing a query towards the sqlite3 database: " . $this->connection->lastErrorMsg());
         }
 
         if ($isFetch) {

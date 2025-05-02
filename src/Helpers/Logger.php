@@ -6,6 +6,9 @@ class Logger
 {
     public function log(mixed $object): void
     {
-        file_put_contents(__DIR__ . "/../../huggingface.log", json_encode($object) . "\n", FILE_APPEND);
+        if (get_class($object) === "stdClass") {
+            $object = json_encode($object);
+        }
+        file_put_contents(__DIR__ . "/../../huggingface.log", $object . "\n", FILE_APPEND);
     }
 }
