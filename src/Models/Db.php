@@ -41,8 +41,10 @@ class Db
         }
 
         $result = $stmt->execute();
-        if (!$result) {
-            throw new DatabaseQueryException("Something went wrong when executing a query towards the sqlite3 database: " . $this->connection->lastErrorMsg());
+        $errorMessage = $this->connection->lastErrorMsg();
+
+        if ($errorMessage !== "not an error") {
+            throw new DatabaseQueryException("Something went wrong when executing a query towards the sqlite3 database: " . $errorMessage);
         }
 
         if ($isFetch) {
