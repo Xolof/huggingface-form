@@ -14,7 +14,8 @@ class Db
 
     public function connect(): void
     {
-        $this->connection = new SQLite3(SQLITE_DB_PATH);
+        $dbPath = constant("SQLITE_DB_PATH");
+        $this->connection = new SQLite3($dbPath);
     }
 
     public function runQuery(string $query): array
