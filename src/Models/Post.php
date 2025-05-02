@@ -20,7 +20,7 @@ class Post
     public function getById(int $id): array
     {
         $this->db->connect();
-        return $this->db->runQueryWithParams("SELECT * FROM posts WHERE post_id=:post_id", [":post_id"], [$id]);
+        return $this->db->runQueryWithParams("SELECT * FROM posts WHERE post_id=:post_id", [":post_id"], [$id], true);
     }
 
     public function add(int $userId, string $text, int $timeToPublish): bool

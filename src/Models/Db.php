@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use SQLite3;
+use \Exception;
 
 class Db
 {
@@ -28,15 +29,22 @@ class Db
         return $array;
     }
 
-    public function runQueryWithParams(string $query, array $columns, array $params): array
+    public function runQueryWithParams(string $query, array $columns, array $params, bool $isFetch): mixed
     {
         $stmt = $this->connection->prepare($query);
+
         foreach ($columns as $index => $column) {
             $stmt->bindValue($column, $params[$index]);
         }
+
         $result = $stmt->execute();
-        $array = $result->fetchArray(SQLITE3_ASSOC);
-        $stmt->close();
-        return $array ? $array : [];
+
+        if ($isFetch) {
+            $array = $result->fetchArray(SQLITE3_ASSOC);
+            $stmt->close();
+            return $array;
+        }
+
+        return true;
     }
 }
