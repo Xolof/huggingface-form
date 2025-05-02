@@ -52,8 +52,8 @@ class Api
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt(
             $ch, CURLOPT_HTTPHEADER, [
-            "Authorization: Bearer $hfToken",
-            "Content-Type: application/json"
+                "Authorization: Bearer $hfToken",
+                "Content-Type: application/json"
             ]
         );
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));

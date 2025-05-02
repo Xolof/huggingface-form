@@ -21,7 +21,7 @@ class Db
     {
         $result = $this->connection->query($query);
         $array = [];
-        while($row = $result->fetchArray(SQLITE3_ASSOC)) {
+        while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
             $array[] = $row;
         }
         return $array;
