@@ -20,8 +20,11 @@ class Db
     public function runQuery(string $query): array
     {
         $result = $this->connection->query($query);
-        $row = $result->fetchArray(SQLITE3_ASSOC);
-        return $row;
+        $array = [];
+        while($row = $result->fetchArray(SQLITE3_ASSOC)) {
+            $array[] = $row;
+        }
+        return $array;
     }
 
     public function runQueryWithParams(string $query, array $columns, array $params): array
