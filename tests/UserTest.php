@@ -17,6 +17,16 @@ final class UserTest extends TestCase
         $db = new Db();
         $db->connect();
         $db->runQuery("DELETE FROM users WHERE id > 1");
+
+        if (session_status() != 2) {
+            session_start();
+        }
+    }
+
+    protected function tearDown(): void
+    {
+        session_unset();
+        session_destroy();
     }
 
     public function testCanCreate(): void
@@ -50,6 +60,13 @@ final class UserTest extends TestCase
         );
     }
 
+    public function testCanGetAll(): void
+    {
+        $user = new User();
+        $allUsers = $user->getAll();
+        $this->assertSame("admin", $allUsers[0]["name"]);
+    }
+
     public function testCanGetByEmail(): void
     {
         $email = "oljo@protonmail.ch";
@@ -59,5 +76,20 @@ final class UserTest extends TestCase
 
         $this->assertSame("admin", $res["name"]);
     }
+
+    public function testLogin(): void
+    {
+        $user = new User();
+        $user->login("5", "olof");
+        $this->assertSame($_SESSION["user_id"], "5");
+    }
+
+    public function testLogout(): void
+    {
+        $user = new User();
+        $allUsers = $user->logout();
+        $this->assertTrue(!isset($_SESSION["user_id"]));
+    }
+
 }
 
