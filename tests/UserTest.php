@@ -9,6 +9,7 @@ use App\Exceptions\DatabaseQueryException;
 
 require_once __DIR__ . '/../config.php';
 
+#[CoversClass(User::class)]
 final class UserTest extends TestCase
 {
     protected function setUp(): void
@@ -27,7 +28,6 @@ final class UserTest extends TestCase
             'user', $email, 0,
             '$2y$12$Rqq/zGND.26gnXUF03a2DOPfSYk9/ueyHu1ObLM5LYDneVjML45ra'
         );
-        var_dump($createResult);
         $getResult = $user->getByEmail($email);
         $this->assertSame("user", $getResult["name"]);
     }
