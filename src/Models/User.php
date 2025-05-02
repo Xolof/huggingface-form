@@ -30,7 +30,6 @@ class User
         $_SESSION['user_id'] = $userId;
         $_SESSION['username'] = $userName;
         header("Location: /admin");
-        exit;
     }
 
     public function logout(): void
@@ -38,7 +37,6 @@ class User
         session_unset();
         session_destroy();
         header("Location: /");
-        exit;
     }
 
     public function create(string $username, string $email, int $isAdmin, string $password): void
