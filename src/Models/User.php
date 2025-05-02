@@ -40,4 +40,23 @@ class User
         header("Location: /");
         exit;
     }
+
+    public function create(string $username, string $email, int $isAdmin, string $password): void
+    {
+        $this->db->connect();
+        $this->db->runQueryWithParams(
+            "INSERT INTO users (name, email, isAdmin, password) VALUES (:name, :email, :isAdmin, :password)",
+            [
+                ":name",
+                ":email",
+                ":isAdmin", ":password"
+            ],
+            [
+                $username,
+                $email,
+                $isAdmin, $password
+            ],
+            false
+        );
+    }
 }
