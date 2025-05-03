@@ -11,7 +11,12 @@ final class PostTest extends TestCase
 {
     protected function setUp(): void
     {
-
+        $db = new Db();
+        $db->connect();
+        $db->runQuery(
+            "INSERT INTO posts (user_id, post, publish_unix_timestamp) VALUES
+    (5, 'This is a test post.', 1446015394);"
+        );
     }
 
     protected function tearDown(): void
@@ -29,5 +34,14 @@ final class PostTest extends TestCase
         $allPosts = $post->getAll();
 
         $this->assertSame($text, $allPosts[array_key_last($allPosts)]["post"]);
+    }
+
+    public function testCanGetById(): void
+    {
+        $post = new Post();
+        $id = 1;
+        $res = $post->getById(1);
+
+        $this->assertSame("Hello, World! This is some text.", $res["post"]);
     }
 }
