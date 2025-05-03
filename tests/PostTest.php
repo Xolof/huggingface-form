@@ -6,7 +6,6 @@ use PHPUnit\Framework\TestCase;
 use App\Models\Post;
 use App\Models\Db;
 
-#[CoversClass(Post::class)]
 final class PostTest extends TestCase
 {
     protected function setUp(): void
