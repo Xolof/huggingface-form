@@ -76,6 +76,16 @@ final class UserTest extends TestCase
         $this->assertSame("admin", $res["name"]);
     }
 
+    public function testTryToGetInvalidUserByEmail(): void
+    {
+        $email = "invalido@test.se";
+
+        $user = new User();
+        $res = $user->getByEmail($email);
+
+        $this->assertSame([], $res);
+    }
+
     public function testLogin(): void
     {
         $user = new User();
@@ -89,5 +99,4 @@ final class UserTest extends TestCase
         $user->logout();
         $this->assertTrue(!isset($_SESSION["user_id"]));
     }
-
 }
