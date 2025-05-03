@@ -13,5 +13,8 @@
         "squizlabs/php_codesniffer": "^3.12",
         "phpstan/phpstan": "^2.1",
         "phpmd/phpmd" : "@stable"
+    },
+    "scripts": {
+        "test": "./tests.sh"
     }
 }
