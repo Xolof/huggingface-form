@@ -29,7 +29,7 @@ class User
         return $res;
     }
 
-    public function login(string $userId, string $userName): void
+    public function login(int $userId, string $userName): void
     {
         $_SESSION['user_id'] = $userId;
         $_SESSION['username'] = $userName;
