@@ -6,9 +6,11 @@ require_once __DIR__ . '/../config.php';
 require __DIR__ . '/../vendor/autoload.php';
 
 use App\Helpers\Markdowner;
+use App\Helpers\Logger;
 use App\Models\Api;
 use App\Models\Post;
 use App\Models\User;
+use App\Clients\CurlHttpClient;
 
 if (session_status() != 2) {
     session_start();
@@ -26,7 +28,16 @@ switch ($uri) {
 case '/':
     $question = filter_input(INPUT_GET, 'question', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     if (isset($question)) {
-        $api = new Api($question);
+
+        if (!defined("HF_API_TOKEN")) {
+            throw new Exception("Could not get the API token.");
+        };
+
+        $token = constant("HF_API_TOKEN");
+        $logger = new Logger();
+        $curlHttpClient = new CurlHttpClient();
+
+        $api = new Api($question, $logger, $curlHttpClient, $token);
         $res = $api->makeCurlRequest();
         $markdown = $markdowner->print($res);
     }
