@@ -106,3 +106,4 @@ class ApiTest extends TestCase
         $api->makeCurlRequest();
     }
 }
+
