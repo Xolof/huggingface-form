@@ -60,9 +60,14 @@ class Post
         );
     }
 
-    public function delete(int $id): bool
+    public function delete(int $id): void
     {
         $this->db->connect();
-        return false;
+        $this->db->runQueryWithParams(
+            "DELETE FROM posts WHERE post_id=:post_id",
+            [":post_id"],
+            [$id],
+            false
+        );
     }
 }
