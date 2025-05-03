@@ -22,7 +22,11 @@ class User
     public function getByEmail(string $email): array
     {
         $this->db->connect();
-        return $this->db->runQueryWithParams("SELECT * FROM users WHERE email=:email", [":email"], [$email], true);
+        $res = $this->db->runQueryWithParams("SELECT * FROM users WHERE email=:email", [":email"], [$email], true);
+        if ($res === false) {
+            return [];
+        }
+        return $res;
     }
 
     public function login(string $userId, string $userName): void
