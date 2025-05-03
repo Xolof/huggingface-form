@@ -79,8 +79,8 @@ final class UserTest extends TestCase
     public function testLogin(): void
     {
         $user = new User();
-        $user->login("5", "olof");
-        $this->assertSame($_SESSION["user_id"], "5");
+        $user->login(5, "olof");
+        $this->assertSame($_SESSION["user_id"], 5);
     }
 
     public function testLogout(): void
