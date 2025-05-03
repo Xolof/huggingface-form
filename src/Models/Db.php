@@ -17,6 +17,7 @@ class Db
     {
         $dbPath = constant("SQLITE_DB_PATH");
         $this->connection = new SQLite3($dbPath);
+        $this->connection->enableExceptions(true);
     }
 
     public function runQuery(string $query): array
