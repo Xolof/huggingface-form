@@ -23,10 +23,22 @@ class Post
         return $this->db->runQueryWithParams("SELECT * FROM posts WHERE post_id=:post_id", [":post_id"], [$id], true);
     }
 
-    public function add(int $userId, string $text, int $timeToPublish): bool
+    public function add(int $userId, string $text, int $timeToPublish): void
     {
         $this->db->connect();
-        return false;
+        $this->db->runQueryWithParams(
+            "INSERT INTO posts (user_id, post, publish_unix_timestamp) VALUES (:user_id, :post, :publish_unix_timestamp)",
+            [
+                ":user_id",
+                ":post", ":publish_unix_timestamp"
+            ],
+            [
+                $userId,
+                $text,
+                $timeToPublish
+            ],
+            false
+        );
     }
 
     public function update(int $id): bool
