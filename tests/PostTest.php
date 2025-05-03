@@ -18,7 +18,7 @@ final class PostTest extends TestCase
     {
         $db = new Db();
         $db->connect();
-        $db->runQuery("DELETE FROM posts WHERE id > 2");
+        $db->runQuery("DELETE FROM posts WHERE post_id > 2");
     }
 
     public function testCanAdd(): void
