@@ -75,6 +75,6 @@ final class PostTest extends TestCase
         $allPosts = $post->getAll();
         $countPostsAfter = count($allPosts);
 
-        $this->assertSame($countPostsAfter, $countPostsBefore -1);
+        $this->assertSame($countPostsAfter, $countPostsBefore - 1);
     }
 }
