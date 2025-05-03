@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Helpers\Logger;
 use App\Exceptions\CurlErrorException;
+use \Exception;
 
 class Api
 {
@@ -23,7 +24,7 @@ class Api
     {
         if (!defined("HF_API_TOKEN")) {
             $this->logger->log("Could not get the API token.");
-            throw new \Exception("Could not get the API token.");
+            throw new Exception("Could not get the API token.");
         };
         return HF_API_TOKEN;
     }
