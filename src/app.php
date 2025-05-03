@@ -1,12 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 require_once __DIR__ . '/../config.php';
 require __DIR__ . '/../vendor/autoload.php';
-use App\Models\Api;
-use App\Models\User;
-use App\Helpers\Markdowner;
 
-session_start();
+use App\Helpers\Markdowner;
+use App\Helpers\Logger;
+use App\Models\Api;
+use App\Models\Post;
+use App\Models\User;
+use App\Clients\CurlHttpClient;
+
+if (session_status() != 2) {
+    session_start();
+}
 
 $uri = $_SERVER['REQUEST_URI'];
 
@@ -14,68 +22,71 @@ if ($positionQuestionMark = strpos($uri, "?")) {
     $uri = substr($uri, 0, $positionQuestionMark);
 }
 
-$parsedown = new Parsedown();
-$markdowner = new Markdowner($parsedown);
+$markdowner = new Markdowner();
 
 switch ($uri) {
-    case '/':
-        $question = filter_input(INPUT_GET, 'question', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        if (isset($question)) {
-            $api = new Api($question);
-            $res = $api->makeCurlRequest();
-            $markdown = $markdowner->print($res);
-        }
-        require __DIR__ . "/views/homeView.php";
-        break;
+case '/':
+    $question = filter_input(INPUT_GET, 'question', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    if (isset($question)) {
 
-    case '/blog':
-        require __DIR__ . "/views/blogView.php";
-        break;
+        if (!defined("HF_API_TOKEN")) {
+            throw new Exception("Could not get the API token.");
+        };
 
-    case '/admin':
-        if (!$_SESSION["username"]) {
-            header("Location: /");
-            exit;
-        }
-        require __DIR__ . "/views/adminView.php";
-        break;
+        $token = constant("HF_API_TOKEN");
+        $logger = new Logger();
+        $curlHttpClient = new CurlHttpClient();
 
-    case '/login':
-        $email = trim(filter_input(INPUT_POST, 'email', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
-        $password = trim(filter_input(INPUT_POST, 'password', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
+        $api = new Api($question, $logger, $curlHttpClient, $token);
+        $res = $api->makeCurlRequest();
+        $markdown = $markdowner->print($res);
+    }
+    include __DIR__ . "/views/homeView.php";
+    break;
 
-        $user = new User();
-        // TODO: Move logic to the User class.
-        if (isset($email) && $email != "") {
-            $userData = $user->getByEmail($email);
-            if (count($userData)) {
-                if (password_verify($password, $userData["password"])) {
-                    $_SESSION['user_id'] = $userData["id"];
-                    $_SESSION['username'] = $userData["name"];
-                    header("Location: /admin");
-                    exit;
-                } else {
-                    echo "<br>Could not login, check your password.";
-                }
-            } else {
-                echo "<br>Could not find that user.";
-            };
-        }
+case '/blog':
+    $post = new Post();
+    $allPosts = $post->getAll();
+    include __DIR__ . "/views/blogView.php";
+    break;
 
-        require __DIR__ . "/views/loginView.php";
-        break;
-
-    case '/logout':
-        session_start();
-        session_unset();
-        session_destroy();
+case '/admin':
+    if (!$_SESSION["username"]) {
         header("Location: /");
         exit;
-        break;
+    }
+    include __DIR__ . "/views/adminView.php";
+    break;
 
-    default:
-        http_response_code(404);
-        echo '404 Not Found';
+case '/login':
+    $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+    $user = new User();
+    if (isset($email) && $email != "") {
+        $userData = $user->getByEmail(trim($email));
+        if (count($userData)) {
+            if (password_verify(trim($password), $userData["password"])) {
+                $user->login($userData["id"], $userData["name"]);
+            } else {
+                echo "<br>Could not login, check your password.";
+            }
+        } else {
+            echo "<br>Could not find that user.";
+        };
+    }
+
+    include __DIR__ . "/views/loginView.php";
+    break;
+
+case '/logout':
+    $user = new User();
+    $user->logout();
+    break;
+
+default:
+    http_response_code(404);
+    echo '404 Not Found';
 }
 
 exit;

@@ -3,3 +3,8 @@ hff.db
 .ddev
 huggingface.log
 vendor/
+TODO.md
+setup.sql
+.phpunit.cache
+coverage/
+

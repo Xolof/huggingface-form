@@ -8,8 +8,8 @@ require __DIR__ . "/../templates/header.php";
 
 <?php $username = $_SESSION["username"]; ?>
 
-<?php if ($username): ?>
-    <p>You are logged in as <?= $username ?>.</p>
+<?php if ($username) : ?>
+    <p>You are logged in as <?php echo $username ?>.</p>
 <?php endif; ?>
 
 <?php

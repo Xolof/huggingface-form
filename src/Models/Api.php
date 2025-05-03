@@ -3,27 +3,29 @@
 namespace App\Models;
 
 use App\Helpers\Logger;
+use App\Exceptions\CurlErrorException;
+use App\Clients\CurlHttpClient;
+use App\Interfaces\HttpClientInterface;
+use Exception;
 
 class Api
 {
-    private $url = "https://router.huggingface.co/nebius/v1/chat/completions";
+    private string $url = "https://router.huggingface.co/nebius/v1/chat/completions";
+    private string $question;
+    private Logger $logger;
+    private HttpClientInterface $httpClient;
+    private string $hfToken;
 
-    private $fetchWentWrongMessage = "Something went wrong when trying to fetch the data.";
-
-    public function __construct(string $question)
-    {
+    public function __construct(
+        string $question,
+        Logger $logger,
+        HttpClientInterface $httpClient,
+        string $hfToken
+    ) {
         $this->question = $question;
-        $this->logger = new Logger();
-    }
-
-    private function getToken(): string
-    {
-        if(!defined("HF_API_TOKEN")) {
-            $this->logger->log("Could not get the API token.");
-            http_response_code(500);
-            exit($this->fetchWentWrongMessage);
-        };
-        return HF_API_TOKEN;
+        $this->logger = $logger;
+        $this->httpClient = $httpClient;
+        $this->hfToken = $hfToken;
     }
 
     private function getPayload(): array
@@ -40,47 +42,28 @@ class Api
         ];
     }
 
-    private function doCurl(string $question, string $url, string $hfToken, array $data): string
-    {
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, [
-            "Authorization: Bearer $hfToken",
-            "Content-Type: application/json"
-        ]);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
-        $response = curl_exec($ch);
-
-        if ($response === false) {
-            throw new Exception(curl_error($ch));
-        } else {
-            curl_close($ch);
-            return $response;
-        }
-    }
-
     public function makeCurlRequest(): string
     {
-        $hfToken = $this->getToken();
         $data = $this->getPayload();
+        $headers = [
+            "Authorization: Bearer $this->hfToken",
+            "Content-Type: application/json"
+        ];
 
         try {
-            $res = $this->doCurl($this->question, $this->url, $hfToken, $data);
-            $res = json_decode($res);
-        } catch(Exception $e) {
-            $this->logger->log($e);
-            exit($this->fetchWentWrongMessage);
+            $response = $this->httpClient->post($this->url, $headers, $data);
+            $decodedResponse = json_decode($response, false, 512, JSON_THROW_ON_ERROR);
+        } catch (Exception $e) {
+            $this->logger->log("Something went wrong when trying to make a call to the API: " . $e->getMessage());
+            throw new CurlErrorException("Something went wrong when trying to make a call to the API: " . $e->getMessage());
         }
-    
-        $this->logger->log($res);
-    
-        if (isset($res->code) && $res->code == 404) {
-            exit($this->fetchWentWrongMessage);
+
+        $this->logger->log($response);
+
+        if (isset($decodedResponse->code) && $decodedResponse->code == 404) {
+            throw new CurlErrorException("Something went wrong when trying to make a call to the API: " . json_encode($decodedResponse));
         }
-    
-        return $res->choices[0]->message->content;
-    }   
+
+        return $decodedResponse->choices[0]->message->content;
+    }
 }
-
-
