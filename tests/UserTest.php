@@ -33,7 +33,7 @@ final class UserTest extends TestCase
         $user = new User();
 
         $email = 'user@user.se';
-        $createResult = $user->create(
+        $user->create(
             'user', $email, 0,
             '$2y$12$Rqq/zGND.26gnXUF03a2DOPfSYk9/ueyHu1ObLM5LYDneVjML45ra'
         );
@@ -48,12 +48,12 @@ final class UserTest extends TestCase
         $user = new User();
         $email = 'user@user.se';
 
-        $createResult = $user->create(
+        $user->create(
             'user', $email, 0,
             '$2y$12$Rqq/zGND.26gnXUF03a2DOPfSYk9/ueyHu1ObLM5LYDneVjML45ra'
         );
 
-        $createResult = $user->create(
+        $user->create(
             'user', $email, 0,
             '$2y$12$Rqq/zGND.26gnXUF03a2DOPfSYk9/ueyHu1ObLM5LYDneVjML45ra'
         );
@@ -86,7 +86,7 @@ final class UserTest extends TestCase
     public function testLogout(): void
     {
         $user = new User();
-        $allUsers = $user->logout();
+        $user->logout();
         $this->assertTrue(!isset($_SESSION["user_id"]));
     }
 
