@@ -43,4 +43,22 @@ final class PostTest extends TestCase
 
         $this->assertSame("Hello, World! This is some text.", $res["post"]);
     }
+
+    public function testCanUpdate(): void
+    {
+        $post = new Post();
+        $newContent = "This is the new content of the post.";
+        $newPublishTime = 1555555555;
+
+        $allPosts = $post->getAll();
+        $lastPost = $allPosts[array_key_last($allPosts)];
+
+        $post->update($lastPost["post_id"], $newContent, $newPublishTime);
+
+        $allPosts = $post->getAll();
+        $lastPost = $allPosts[array_key_last($allPosts)];
+
+        $this->assertSame($newContent, $lastPost["post"]);
+        $this->assertSame($newPublishTime, $lastPost["publish_unix_timestamp"]);
+    }
 }
