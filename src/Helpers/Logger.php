@@ -6,7 +6,7 @@ class Logger
 {
     public function log(mixed $object): void
     {
-        if (get_class($object) === "stdClass") {
+        if (gettype($object) !== "string" && get_class($object) === "stdClass") {
             $object = json_encode($object);
         }
         file_put_contents(__DIR__ . "/../../huggingface.log", $object . "\n", FILE_APPEND);
