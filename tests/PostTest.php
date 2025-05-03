@@ -61,4 +61,20 @@ final class PostTest extends TestCase
         $this->assertSame($newContent, $lastPost["post"]);
         $this->assertSame($newPublishTime, $lastPost["publish_unix_timestamp"]);
     }
+
+    public function testCanDelete(): void
+    {
+        $post = new Post();
+
+        $allPosts = $post->getAll();
+        $countPostsBefore = count($allPosts);
+        $lastPost = $allPosts[array_key_last($allPosts)];
+
+        $post->delete($lastPost["post_id"]);
+
+        $allPosts = $post->getAll();
+        $countPostsAfter = count($allPosts);
+
+        $this->assertSame($countPostsAfter, $countPostsBefore -1);
+    }
 }
