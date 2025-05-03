@@ -4,6 +4,7 @@ namespace App\Models;
 
 use SQLite3;
 use App\Exceptions\DatabaseQueryException;
+use \SQLite3Exception;
 
 class Db
 {
@@ -22,16 +23,14 @@ class Db
 
     public function runQuery(string $query): array
     {
-        $result = $this->connection->query($query);
-        $array = [];
-        if (!$result) {
-            throw new DatabaseQueryException("Sqlite3 error: " . $this->connection->lastErrorMsg());
-        }
-        while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
-            if (!$row) {
-                throw new DatabaseQueryException("Something went wrong when executing a query towards the sqlite3 database: " . $this->connection->lastErrorMsg());
+        try {
+            $result = $this->connection->query($query);
+            $array = [];
+            while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
+                $array[] = $row;
             }
-            $array[] = $row;
+        } catch (SQLite3Exception $e) {
+            throw new DatabaseQueryException("Something went wrong when executing a query towards the sqlite3 database: " . $e);
         }
         return $array;
     }
@@ -44,11 +43,10 @@ class Db
             $stmt->bindValue($column, $params[$index]);
         }
 
-        $result = $stmt->execute();
-        $errorMessage = $this->connection->lastErrorMsg();
-
-        if ($errorMessage !== "not an error") {
-            throw new DatabaseQueryException("Something went wrong when executing a query towards the sqlite3 database: " . $errorMessage);
+        try {
+            $result = $stmt->execute();
+        } catch (SQLite3Exception $e) {
+            throw new DatabaseQueryException("Something went wrong when executing a query towards the sqlite3 database: " . $e);
         }
 
         if ($isFetch) {
