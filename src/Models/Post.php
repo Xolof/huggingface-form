@@ -41,10 +41,23 @@ class Post
         );
     }
 
-    public function update(int $id): bool
+    public function update(int $id, string $text, int $timeToPublish): void
     {
         $this->db->connect();
-        return false;
+        $this->db->runQueryWithParams(
+            "UPDATE posts SET post=:post, publish_unix_timestamp=:publish_unix_timestamp WHERE post_id=:post_id",
+            [
+                ":post_id",
+                ":post",
+                ":publish_unix_timestamp"
+            ],
+            [
+                $id,
+                $text,
+                $timeToPublish
+            ],
+            false
+        );
     }
 
     public function delete(int $id): bool
