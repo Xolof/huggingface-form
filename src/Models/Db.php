@@ -23,6 +23,9 @@ class Db
     {
         $result = $this->connection->query($query);
         $array = [];
+        if (!$result) {
+            throw new DatabaseQueryException("Sqlite3 error: " . $this->connection->lastErrorMsg());
+        }
         while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
             if (!$row) {
                 throw new DatabaseQueryException("Something went wrong when executing a query towards the sqlite3 database: " . $this->connection->lastErrorMsg());
