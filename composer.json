@@ -1,6 +1,7 @@
 {
     "name": "xolof/ai-form",
     "description": "A PHP application integrated with Huggingface's API.",
+    "license": "MIT",
     "authors": [
         {
             "name": "Olof Johansson",
