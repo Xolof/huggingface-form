@@ -42,3 +42,10 @@
             <?php endif; ?>
         </ul>
     </nav>
+
+
+    <?php $message = $_SESSION["message"] ?? null; ?>
+    <?php if (isset($message)) : ?>
+        <p class="flashMessage <?= $message['status'] ?>"><?= $message["message"] ?></p>
+        <?php unset($_SESSION["message"]); ?>
+    <?php endif;

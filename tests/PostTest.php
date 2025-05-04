@@ -77,4 +77,13 @@ final class PostTest extends TestCase
 
         $this->assertSame($countPostsAfter, $countPostsBefore - 1);
     }
+
+    public function testIsValidUnixTimestamp(): void
+    {
+        $post = new Post();
+
+        $this->assertTrue($post->isValidUnixTimestamp(1546015394));
+        $this->assertFalse($post->isValidUnixTimestamp(-1));
+        $this->assertFalse($post->isValidUnixTimestamp(9999999999999));
+    }
 }

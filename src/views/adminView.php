@@ -13,4 +13,7 @@ require __DIR__ . "/../templates/header.php";
 <?php endif; ?>
 
 <?php
+
+require __DIR__ . "/../templates/schedulePostForm.php";
+
 require __DIR__ . "/../templates/footer.html";

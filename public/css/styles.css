@@ -61,3 +61,20 @@ input[type=submit] {
 a {
     color: #00b;
 }
+
+.flashMessage {
+    padding: 0.6em 0.8em;
+    border-radius: 4px;
+}
+
+.success {
+    border: 2px solid green;
+}
+
+.error {
+    border: 2px solid red;
+}
+
+.warning {
+    border: 2px solid orange;
+}

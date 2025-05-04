@@ -60,6 +60,30 @@ case '/admin':
     include __DIR__ . "/views/adminView.php";
     break;
 
+case '/add-post':
+    if (!$_SESSION["username"]) {
+        header("Location: /");
+        exit;
+    }
+
+    $question = filter_input(INPUT_POST, 'question', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $publishUnixTimestamp = filter_input(INPUT_POST, 'publish_unix_timestamp', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+    $publishUnixTimestamp = (int) $publishUnixTimestamp;
+
+    $post = new Post();
+
+    if (!$post->isValidUnixTimestamp($publishUnixTimestamp)) {
+        throw new \Exception("Invalid timestamp.");
+    }
+
+    $post->add($_SESSION["user_id"], $question, "", $publishUnixTimestamp);
+    $_SESSION["message"]["message"] = "Post scheduled";
+    $_SESSION["message"]["status"] = "success";
+    header("Location: /admin");
+
+    break;
+
 case '/login':
     $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_FULL_SPECIAL_CHARS);

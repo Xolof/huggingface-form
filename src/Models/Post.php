@@ -74,4 +74,9 @@ class Post
             false
         );
     }
+
+    public function isValidUnixTimestamp(int $timestamp): bool
+    {
+        return $timestamp >= 0 && $timestamp <= 9999999999 && date('U', $timestamp) == $timestamp;
+    }
 }
