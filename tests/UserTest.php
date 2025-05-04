@@ -7,8 +7,6 @@ use App\Models\User;
 use App\Models\Db;
 use App\Exceptions\DatabaseQueryException;
 
-require_once __DIR__ . '/../config.php';
-
 final class UserTest extends TestCase
 {
     protected function setUp(): void
@@ -68,7 +66,7 @@ final class UserTest extends TestCase
 
     public function testCanGetByEmail(): void
     {
-        $email = "oljo@protonmail.ch";
+        $email = "admin@admin.se";
 
         $user = new User();
         $res = $user->getByEmail($email);

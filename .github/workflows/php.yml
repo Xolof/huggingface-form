@@ -2,7 +2,7 @@ name: PHP Composer
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "develop", "github-workflow" ]
   pull_request:
     branches: [ "master" ]
 
@@ -16,6 +16,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: 8.4.5
 
     - name: Validate composer.json and composer.lock
       run: composer validate --strict
@@ -35,5 +40,23 @@ jobs:
     # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
     # Docs: https://getcomposer.org/doc/articles/scripts.md
 
-    # - name: Run test suite
-    #   run: composer run-script test
+    - name: Run PhpCS
+      run: vendor/bin/phpcs src tests -s
+
+    - name: Run PhpCbf
+      run: vendor/bin/phpcbf src tests
+
+    - name: Run PhpMd src dir
+      run: vendor/bin/phpmd src text cleancode
+
+    - name: Run PhpMd tests dir
+      run: vendor/bin/phpmd tests text cleancode
+
+    - name: Run PhpStan
+      run: vendor/bin/phpstan analyse src tests --memory-limit="512M" --level=5
+
+    - name: Set up Sqlite3 database
+      run: sqlite3 test.db < setup.sql
+
+    - name: Run unit tests
+      run: vendor/bin/phpunit tests

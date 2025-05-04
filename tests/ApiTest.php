@@ -7,6 +7,7 @@ use App\Exceptions\CurlErrorException;
 use App\Helpers\Logger;
 use App\Models\Api;
 use App\Interfaces\HttpClientInterface;
+use \Exception;
 
 class ApiTest extends TestCase
 {
@@ -96,7 +97,7 @@ class ApiTest extends TestCase
 
         $this->mockHttpClient->expects($this->once())
             ->method('post')
-            ->willThrowException(new \Exception($exceptionMessage));
+            ->willThrowException(new Exception($exceptionMessage));
 
         $api = new Api($question, $this->logger, $this->mockHttpClient, $hfToken);
 

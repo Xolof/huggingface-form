@@ -1,6 +1,16 @@
 {
+    "name": "xolof/ai-form",
+    "description": "A PHP application integrated with Huggingface's API.",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Olof Johansson",
+            "email": "oljo@protonmail.ch"
+        }
+    ],
     "require": {
-        "erusev/parsedown": "^1.7"
+        "erusev/parsedown": "^1.7",
+        "vlucas/phpdotenv": "^5.6"
     },
     "autoload": {
         "psr-4": {
@@ -13,5 +23,8 @@
         "squizlabs/php_codesniffer": "^3.12",
         "phpstan/phpstan": "^2.1",
         "phpmd/phpmd" : "@stable"
+    },
+    "scripts": {
+        "test": "./tests.sh"
     }
 }
