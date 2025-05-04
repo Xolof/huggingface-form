@@ -7,8 +7,6 @@ use App\Models\User;
 use App\Models\Db;
 use App\Exceptions\DatabaseQueryException;
 
-require_once __DIR__ . '/../config.php';
-
 final class UserTest extends TestCase
 {
     protected function setUp(): void

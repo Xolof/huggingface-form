@@ -21,6 +21,11 @@
             <directory>src</directory>
         </include>
     </source>
+
+    <php>
+        <env name="SQLITE_DB_PATH" value="./hff.db" force="true"/>
+    </php>
+
 </phpunit>
 
 <!-- requireCoverageMetadata="true" -->
