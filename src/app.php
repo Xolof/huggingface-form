@@ -94,12 +94,15 @@ case '/login':
         if (count($userData)) {
             if (password_verify(trim($password), $userData["password"])) {
                 $user->login($userData["id"], $userData["name"]);
-            } else {
-                echo "<br>Could not login, check your password.";
+                break;
             }
-        } else {
-            echo "<br>Could not find that user.";
-        };
+            $_SESSION["message"]["message"] = "Could not login, check your password.";
+            $_SESSION["message"]["status"] = "error";
+            break;
+        }
+        $_SESSION["message"]["message"] = "Could not find that user.";
+        $_SESSION["message"]["status"] = "error";
+        break;
     }
 
     include __DIR__ . "/views/loginView.php";

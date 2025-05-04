@@ -31,8 +31,17 @@ class User
 
     public function login(int $userId, string $userName): void
     {
+        session_unset();
+        session_destroy();
+
+        session_start();
+
         $_SESSION['user_id'] = $userId;
         $_SESSION['username'] = $userName;
+
+        $_SESSION["message"]["message"] = "Login successful.";
+        $_SESSION["message"]["status"] = "success";
+
         header("Location: /admin");
     }
 
@@ -40,6 +49,12 @@ class User
     {
         session_unset();
         session_destroy();
+
+        session_start();
+
+        $_SESSION["message"]["message"] = "You have been logged out.";
+        $_SESSION["message"]["status"] = "success";
+
         header("Location: /");
     }
 
