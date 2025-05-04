@@ -16,7 +16,7 @@ class Db
 
     public function connect(): void
     {
-        $dbPath = constant("SQLITE_DB_PATH");
+        $dbPath = getenv("SQLITE_DB_PATH");
         $this->connection = new SQLite3($dbPath);
         $this->connection->enableExceptions(true);
     }

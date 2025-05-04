@@ -8,12 +8,10 @@ In the project directory, run `composer install`
 
 Get an API token from Huggingface.
 
-Make a file named `config.php` in the project root directory. Add the token and the path to your sqlite database file in `config.php`.
+Make a file named `.env` in the project root directory. Add the token and the path to your sqlite database file.
 
-    <?php
-
-    define("SQLITE_DB_PATH", "/path/to/your/sqlite/file.db");
-    define("HF_API_TOKEN", "yourApiToken");
+    SQLITE_DB_PATH="/path/to/your/sqlite/file.db"
+    HF_API_TOKEN="yourApiToken"
 
 ## Start the project
 

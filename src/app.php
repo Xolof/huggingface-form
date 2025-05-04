@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-require_once __DIR__ . '/../config.php';
 require __DIR__ . '/../vendor/autoload.php';
 
 use App\Helpers\Markdowner;
@@ -11,6 +10,9 @@ use App\Models\Api;
 use App\Models\Post;
 use App\Models\User;
 use App\Clients\CurlHttpClient;
+
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
+$dotenv->load();
 
 if (session_status() != 2) {
     session_start();
@@ -29,11 +31,11 @@ case '/':
     $question = filter_input(INPUT_GET, 'question', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     if (isset($question)) {
 
-        if (!defined("HF_API_TOKEN")) {
+        $token = getenv("HF_API_TOKEN");
+        if (!$token) {
             throw new Exception("Could not get the API token.");
         };
 
-        $token = constant("HF_API_TOKEN");
         $logger = new Logger();
         $curlHttpClient = new CurlHttpClient();
 
