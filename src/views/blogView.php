@@ -2,13 +2,17 @@
 
 require __DIR__ . "/../templates/header.php";
 
-$allPosts = $allPosts ?? [];
+$publishedPosts = $publishedPosts ?? [];
 
 ?>
 
 <h2>Blog</h2>
 
-<?php foreach ($allPosts as $post) : ?>
+<?php if (count($publishedPosts) < 1) : ?>
+    <p>There are not yet any posts.</p>
+<?php endif; ?>
+
+<?php foreach ($publishedPosts as $post) : ?>
     <?php
         $timestamp = $post["publish_unix_timestamp"];
         $text = $post["post"];

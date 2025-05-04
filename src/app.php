@@ -50,7 +50,7 @@ case '/':
 
 case '/blog':
     $post = new Post();
-    $allPosts = $post->getAll();
+    $publishedPosts = $post->getPublished();
     include __DIR__ . "/views/blogView.php";
     break;
 
