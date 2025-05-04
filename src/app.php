@@ -14,6 +14,8 @@ use App\Clients\CurlHttpClient;
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
 $dotenv->load();
 
+date_default_timezone_set("Europe/Stockholm");
+
 if (session_status() != 2) {
     session_start();
 }
