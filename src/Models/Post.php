@@ -14,13 +14,13 @@ class Post
     public function getAll(): array
     {
         $this->db->connect();
-        return $this->db->runQuery("SELECT * FROM posts");
+        return $this->db->runQuery("SELECT * FROM posts ORDER BY publish_unix_timestamp DESC");
     }
 
     public function getPublished(): array
     {
         $this->db->connect();
-        return $this->db->runQuery("SELECT * FROM posts WHERE post != ''");
+        return $this->db->runQuery("SELECT * FROM posts WHERE post != '' ORDER BY publish_unix_timestamp DESC");
     }
 
     public function getById(int $id): array
