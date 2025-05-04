@@ -50,5 +50,5 @@ jobs:
     - name: Run PhpStan
       run: vendor/bin/phpstan analyse src tests --memory-limit="512M" --level=5
 
-    # - name: Run unit tests
-    #   run: vendor/bin/phpunit tests
+    - name: Run unit tests
+      run: vendor/bin/phpunit tests
