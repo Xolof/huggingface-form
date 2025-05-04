@@ -67,9 +67,10 @@ case '/add-post':
     }
 
     $question = filter_input(INPUT_POST, 'question', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-    $publishUnixTimestamp = filter_input(INPUT_POST, 'publish_unix_timestamp', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $date = filter_input(INPUT_POST, 'date', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $time = filter_input(INPUT_POST, 'time', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-    $publishUnixTimestamp = (int) $publishUnixTimestamp;
+    $publishUnixTimestamp = strtotime($date . " " . $time);
 
     $post = new Post();
 
