@@ -22,7 +22,7 @@ final class CurlHttpClientTest extends TestCase
         $client = new CurlHttpClient();
 
         $url = "invalidurl";
-        
+
         $headers = [
             "Authorization: Bearer $this->hfToken",
             "Content-Type: application/json"
