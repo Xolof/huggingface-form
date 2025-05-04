@@ -17,6 +17,12 @@ class Post
         return $this->db->runQuery("SELECT * FROM posts");
     }
 
+    public function getPublished(): array
+    {
+        $this->db->connect();
+        return $this->db->runQuery("SELECT * FROM posts WHERE post != ''");
+    }
+
     public function getById(int $id): array
     {
         $this->db->connect();
