@@ -23,7 +23,7 @@
     </source>
 
     <php>
-        <env name="SQLITE_DB_PATH" value="./hff.db" force="true"/>
+        <env name="SQLITE_DB_PATH" value="./test.db" force="true"/>
     </php>
 
 </phpunit>

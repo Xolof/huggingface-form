@@ -50,5 +50,8 @@ jobs:
     - name: Run PhpStan
       run: vendor/bin/phpstan analyse src tests --memory-limit="512M" --level=5
 
+    - name: Set up Sqlite3 database
+      run: sqlite3 test.db < setup.sql
+
     - name: Run unit tests
       run: vendor/bin/phpunit tests

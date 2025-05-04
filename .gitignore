@@ -1,5 +1,6 @@
 .env
 hff.db
+test.db
 .ddev
 huggingface.log
 vendor/
