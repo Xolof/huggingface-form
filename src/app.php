@@ -99,10 +99,12 @@ case '/login':
             }
             $_SESSION["message"]["message"] = "Could not login, check your password.";
             $_SESSION["message"]["status"] = "error";
+            include __DIR__ . "/views/loginView.php";
             break;
         }
         $_SESSION["message"]["message"] = "Could not find that user.";
         $_SESSION["message"]["status"] = "error";
+        include __DIR__ . "/views/loginView.php";
         break;
     }
 
