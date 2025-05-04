@@ -9,8 +9,11 @@ $allPosts = $allPosts ?? [];
 <h2>Blog</h2>
 
 <?php foreach ($allPosts as $post) : ?>
-    <?php $timestamp = $post["publish_unix_timestamp"]; ?>
-    <?php if (time() > $timestamp) : ?>
+    <?php
+        $timestamp = $post["publish_unix_timestamp"];
+        $text = $post["post"];
+    ?>
+    <?php if ($text !== "") : ?>
         <p><?= date("Y-m-d H:m", $timestamp) ?></p>
         <?= $post["post"] ?>
         <hr>

@@ -23,17 +23,19 @@ class Post
         return $this->db->runQueryWithParams("SELECT * FROM posts WHERE post_id=:post_id", [":post_id"], [$id], true);
     }
 
-    public function add(int $userId, string $text, int $timeToPublish): void
+    public function add(int $userId, string $question, string $text, int $timeToPublish): void
     {
         $this->db->connect();
         $this->db->runQueryWithParams(
-            "INSERT INTO posts (user_id, post, publish_unix_timestamp) VALUES (:user_id, :post, :publish_unix_timestamp)",
+            "INSERT INTO posts (user_id, question, post, publish_unix_timestamp) VALUES (:user_id, :question, :post, :publish_unix_timestamp)",
             [
                 ":user_id",
+                ":question",
                 ":post", ":publish_unix_timestamp"
             ],
             [
                 $userId,
+                $question,
                 $text,
                 $timeToPublish
             ],
@@ -41,18 +43,20 @@ class Post
         );
     }
 
-    public function update(int $id, string $text, int $timeToPublish): void
+    public function update(int $id, string $question, string $text, int $timeToPublish): void
     {
         $this->db->connect();
         $this->db->runQueryWithParams(
-            "UPDATE posts SET post=:post, publish_unix_timestamp=:publish_unix_timestamp WHERE post_id=:post_id",
+            "UPDATE posts SET question=:question, post=:post, publish_unix_timestamp=:publish_unix_timestamp WHERE post_id=:post_id",
             [
                 ":post_id",
+                ":question",
                 ":post",
                 ":publish_unix_timestamp"
             ],
             [
                 $id,
+                $question,
                 $text,
                 $timeToPublish
             ],
