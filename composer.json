@@ -1,4 +1,12 @@
 {
+    "name": "xolof/ai-form",
+    "description": "A PHP application integrated with Huggingface's API.",
+    "authors": [
+        {
+            "name": "Olof Johansson",
+            "email": "oljo@protonmail.ch"
+        }
+    ],
     "require": {
         "erusev/parsedown": "^1.7",
         "vlucas/phpdotenv": "^5.6"
