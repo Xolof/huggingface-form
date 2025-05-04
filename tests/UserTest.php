@@ -66,7 +66,7 @@ final class UserTest extends TestCase
 
     public function testCanGetByEmail(): void
     {
-        $email = "oljo@protonmail.ch";
+        $email = "admin@admin.se";
 
         $user = new User();
         $res = $user->getByEmail($email);
