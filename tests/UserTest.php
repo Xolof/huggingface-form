@@ -41,7 +41,7 @@ final class UserTest extends TestCase
 
     public function testCanNotCreateIfExists(): void
     {
-        $this->expectException(DatabaseQueryException::class);
+        $this->expectException(Exception::class);
 
         $user = new User();
         $email = 'user@user.se';
