@@ -18,7 +18,7 @@ $publishedPosts = $publishedPosts ?? [];
         $text = $post["post"];
     ?>
     <?php if ($text !== "") : ?>
-        <p><?= date("Y-m-d H:m", $timestamp) ?></p>
+        <p><?= date("Y-m-d H:i", $timestamp) ?></p>
         <?= $post["post"] ?>
         <hr>
     <?php endif; ?>
