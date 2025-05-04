@@ -26,7 +26,7 @@ final class DbTest extends TestCase
 
     public function testInvalidQuery(): void
     {
-        $this->expectException(Exception::class);
+        $this->expectException(DatabaseQueryException::class);
         $db = new Db();
         $db->connect();
         $allPosts = $db->runQuery("SELECT * FROM invalid_table;");
