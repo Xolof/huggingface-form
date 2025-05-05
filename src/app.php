@@ -62,8 +62,11 @@ $router->get(
             header("Location: /");
             exit;
         }
-        include __DIR__ . "/views/adminView.php";
 
+        $post = new Post();
+        $allPosts = $post->getAll();
+
+        include __DIR__ . "/views/adminView.php";
     }
 );
 
