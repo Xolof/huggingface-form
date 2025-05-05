@@ -31,11 +31,9 @@ foreach($publishedPosts as $post) {
     $question = $post["question"];
     $id = $post["post_id"];
     $timestamp = $post["publish_unix_timestamp"];
-    echo sprintf("Question: %s" , $question) . "\n";
-    echo date("Y-m-d H:i", $timestamp) . "\n";
     
     if (time() > $timestamp && $post["post"] === "") {
-        echo "Publishing the post with question $question and id $id.\n";
+        echo "Publishing the post with question '$question' and id $id.\n\n";
 
         $api = new Api($question, $logger, $curlHttpClient, $token);
         $content = $api->makeCurlRequest();
@@ -50,10 +48,9 @@ foreach($publishedPosts as $post) {
     }
 
     if ($post["post"] !== "") {
-        echo "The post with question $question and id $id is already published.\n";
+        echo "The post with question '$question' and id $id is already published.\n\n";
         continue;
     }
 
-    echo "Waiting to publish the post with question $question and id $id.\n";
-    echo "\n";
+    echo "Waiting to publish the post with question '$question' and id $id.\n\n";
 }
