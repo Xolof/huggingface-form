@@ -23,6 +23,14 @@ Read the SQL file into the Sqlite3 database.
 
 `sqlite3 hff.db < setup.sql`
 
+### Cronjob
+
+A cronjob should be run every minute to update posts that should be published.
+
+Add this line to your crontab and change to the correct paths.
+
+`* * * * * php /pathToThisProjectOnYourMachine/huggingface-form/scripts/addContentToPost.php >> /pathToThisProjectOnYourMachine/projects/huggingface-form/huggingface.log`
+
 ## Tests
 
 The script `tests.sh` contains the test suite.
