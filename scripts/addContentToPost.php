@@ -39,7 +39,7 @@ foreach($publishedPosts as $post) {
 
         $api = new Api($question, $logger, $curlHttpClient, $token);
         $content = $api->makeCurlRequest();
-        $html = "<h2>Topic: $question</h2>" . $markdowner->print($content);
+        $html = "<h3>Topic: $question</h3>" . $markdowner->print($content);
         $postObject->update(
             $post["post_id"],
             $post["question"],
