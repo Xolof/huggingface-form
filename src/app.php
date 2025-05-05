@@ -139,23 +139,25 @@ $router->post(
         $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
         $user = new User();
-        if (isset($email) && $email != "") {
-            $userData = $user->getByEmail(trim($email));
-            if (count($userData)) {
-                if (password_verify(trim($password), $userData["password"])) {
-                    $user->login($userData["id"], $userData["name"]);
-                    return;
-                }
-                $_SESSION["message"]["message"] = "Could not login, check your password.";
-                $_SESSION["message"]["status"] = "error";
-                include __DIR__ . "/views/loginView.php";
+        if (!isset($email) || $email === "") {
+            throw new \InvalidArgumentException("Invalid input");
+        }
+
+        $userData = $user->getByEmail(trim($email));
+        if (count($userData)) {
+            if (password_verify(trim($password), $userData["password"])) {
+                $user->login($userData["id"], $userData["name"]);
                 return;
             }
-            $_SESSION["message"]["message"] = "Could not find that user.";
+            $_SESSION["message"]["message"] = "Could not login, check your password.";
             $_SESSION["message"]["status"] = "error";
             include __DIR__ . "/views/loginView.php";
             return;
         }
+        $_SESSION["message"]["message"] = "Could not find that user.";
+        $_SESSION["message"]["status"] = "error";
+        include __DIR__ . "/views/loginView.php";
+        return;
     }
 );
 
