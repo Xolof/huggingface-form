@@ -2,16 +2,25 @@
 
 require __DIR__ . "/../templates/header.php";
 
-$allPosts = $allPosts ?? [];
+$publishedPosts = $publishedPosts ?? [];
 
 ?>
 
 <h2>Blog</h2>
 
-<?php foreach ($allPosts as $post) : ?>
-    <?php $timestamp = $post["publish_unix_timestamp"]; ?>
-    <?php if (time() > $timestamp) : ?>
-        <p><?= date("Y-m-d H:m", $timestamp) ?></p>
+<p>Automatically published content written by the LLM "Google Gemma 3 27b it"</p>
+
+<?php if (count($publishedPosts) < 1) : ?>
+    <p>There are not yet any posts.</p>
+<?php endif; ?>
+
+<?php foreach ($publishedPosts as $post) : ?>
+    <?php
+        $timestamp = $post["publish_unix_timestamp"];
+        $text = $post["post"];
+    ?>
+    <?php if ($text !== "") : ?>
+        <p><?= date("Y-m-d H:i", $timestamp) ?></p>
         <?= $post["post"] ?>
         <hr>
     <?php endif; ?>

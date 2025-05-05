@@ -14,26 +14,34 @@ class Post
     public function getAll(): array
     {
         $this->db->connect();
-        return $this->db->runQuery("SELECT * FROM posts");
+        return $this->db->runQuery("SELECT * FROM posts ORDER BY publish_unix_timestamp DESC");
     }
 
-    public function getById(int $id): array
+    public function getPublished(): array
+    {
+        $this->db->connect();
+        return $this->db->runQuery("SELECT * FROM posts WHERE post != '' ORDER BY publish_unix_timestamp DESC");
+    }
+
+    public function getById(int $id): array|bool
     {
         $this->db->connect();
         return $this->db->runQueryWithParams("SELECT * FROM posts WHERE post_id=:post_id", [":post_id"], [$id], true);
     }
 
-    public function add(int $userId, string $text, int $timeToPublish): void
+    public function add(int $userId, string $question, string $text, int $timeToPublish): void
     {
         $this->db->connect();
         $this->db->runQueryWithParams(
-            "INSERT INTO posts (user_id, post, publish_unix_timestamp) VALUES (:user_id, :post, :publish_unix_timestamp)",
+            "INSERT INTO posts (user_id, question, post, publish_unix_timestamp) VALUES (:user_id, :question, :post, :publish_unix_timestamp)",
             [
                 ":user_id",
+                ":question",
                 ":post", ":publish_unix_timestamp"
             ],
             [
                 $userId,
+                $question,
                 $text,
                 $timeToPublish
             ],
@@ -41,18 +49,20 @@ class Post
         );
     }
 
-    public function update(int $id, string $text, int $timeToPublish): void
+    public function update(int $id, string $question, string $text, int $timeToPublish): void
     {
         $this->db->connect();
         $this->db->runQueryWithParams(
-            "UPDATE posts SET post=:post, publish_unix_timestamp=:publish_unix_timestamp WHERE post_id=:post_id",
+            "UPDATE posts SET question=:question, post=:post, publish_unix_timestamp=:publish_unix_timestamp WHERE post_id=:post_id",
             [
                 ":post_id",
+                ":question",
                 ":post",
                 ":publish_unix_timestamp"
             ],
             [
                 $id,
+                $question,
                 $text,
                 $timeToPublish
             ],
@@ -69,5 +79,10 @@ class Post
             [$id],
             false
         );
+    }
+
+    public function isValidUnixTimestamp(int $timestamp): bool
+    {
+        return $timestamp >= 0 && $timestamp <= 9999999999 && date('U', $timestamp) == $timestamp;
     }
 }

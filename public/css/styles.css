@@ -3,6 +3,7 @@ body {
     max-width: 968px;
     margin: 0 auto;
     padding: 1em;
+    line-height: 1.5em;
 }
 
 textarea#question {
@@ -55,9 +56,39 @@ input[type=submit] {
 }
 
 .activeRoute {
-    border: 2px solid #4d4d4d;
+    border: 2px solid #1d628d;
 }
 
 a {
     color: #00b;
+}
+
+.flashMessage {
+    padding: 0.6em 0.8em;
+    border-radius: 4px;
+}
+
+.success {
+    border: 2px solid green;
+}
+
+.error {
+    border: 2px solid red;
+}
+
+.warning {
+    border: 2px solid orange;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+th {
+    background-color: #f2f2f2;
 }

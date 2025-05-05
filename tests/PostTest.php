@@ -13,8 +13,8 @@ final class PostTest extends TestCase
         $db = new Db();
         $db->connect();
         $db->runQuery(
-            "INSERT INTO posts (user_id, post, publish_unix_timestamp) VALUES
-    (5, 'This is a test post.', 1446015394);"
+            "INSERT INTO posts (user_id, question, post, publish_unix_timestamp) VALUES
+    (5, 'What is PhpUnit?', '', 1446015394);"
         );
     }
 
@@ -28,11 +28,11 @@ final class PostTest extends TestCase
     public function testCanAdd(): void
     {
         $post = new Post();
-        $text = "This is some text.";
-        $post->add(1, $text, 1736015394);
+        $question = "What is Sqlite?.";
+        $post->add(1, $question, "", 2136015394);
         $allPosts = $post->getAll();
 
-        $this->assertSame($text, $allPosts[array_key_last($allPosts)]["post"]);
+        $this->assertSame($question, $allPosts[array_key_first($allPosts)]["question"]);
     }
 
     public function testCanGetById(): void
@@ -41,25 +41,25 @@ final class PostTest extends TestCase
         $id = 1;
         $res = $post->getById(1);
 
-        $this->assertSame("Hello, World! This is some text.", $res["post"]);
+        $this->assertSame("What is PHP?", $res["question"]);
     }
 
     public function testCanUpdate(): void
     {
         $post = new Post();
-        $newContent = "This is the new content of the post.";
-        $newPublishTime = 1555555555;
+        $newQuestion = "What is a badger?";
+        $newPublishTime = 2036015394;
 
         $allPosts = $post->getAll();
-        $lastPost = $allPosts[array_key_last($allPosts)];
+        $latestPost = $allPosts[array_key_first($allPosts)];
 
-        $post->update($lastPost["post_id"], $newContent, $newPublishTime);
+        $post->update($latestPost["post_id"], $newQuestion, "", $newPublishTime);
 
         $allPosts = $post->getAll();
-        $lastPost = $allPosts[array_key_last($allPosts)];
+        $latestPost = $allPosts[array_key_first($allPosts)];
 
-        $this->assertSame($newContent, $lastPost["post"]);
-        $this->assertSame($newPublishTime, $lastPost["publish_unix_timestamp"]);
+        $this->assertSame($newQuestion, $latestPost["question"]);
+        $this->assertSame($newPublishTime, $latestPost["publish_unix_timestamp"]);
     }
 
     public function testCanDelete(): void
@@ -76,5 +76,14 @@ final class PostTest extends TestCase
         $countPostsAfter = count($allPosts);
 
         $this->assertSame($countPostsAfter, $countPostsBefore - 1);
+    }
+
+    public function testIsValidUnixTimestamp(): void
+    {
+        $post = new Post();
+
+        $this->assertTrue($post->isValidUnixTimestamp(1546015394));
+        $this->assertFalse($post->isValidUnixTimestamp(-1));
+        $this->assertFalse($post->isValidUnixTimestamp(9999999999999));
     }
 }

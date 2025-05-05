@@ -10,9 +10,12 @@ use App\Models\Api;
 use App\Models\Post;
 use App\Models\User;
 use App\Clients\CurlHttpClient;
+use App\Router;
 
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
 $dotenv->load();
+
+date_default_timezone_set("Europe/Stockholm");
 
 if (session_status() != 2) {
     session_start();
@@ -20,75 +23,161 @@ if (session_status() != 2) {
 
 $uri = $_SERVER['REQUEST_URI'];
 
-if ($positionQuestionMark = strpos($uri, "?")) {
-    $uri = substr($uri, 0, $positionQuestionMark);
-}
+$router = new Router();
 
-$markdowner = new Markdowner();
+$router->get(
+    '/', function () {
+        $question = filter_input(INPUT_GET, 'question', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        if (isset($question)) {
 
-switch ($uri) {
-case '/':
-    $question = filter_input(INPUT_GET, 'question', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-    if (isset($question)) {
+            $token = getenv("HF_API_TOKEN");
+            if (!$token) {
+                throw new Exception("Could not get the API token.");
+            };
 
-        $token = getenv("HF_API_TOKEN");
-        if (!$token) {
-            throw new Exception("Could not get the API token.");
-        };
+            $logger = new Logger();
+            $curlHttpClient = new CurlHttpClient();
 
-        $logger = new Logger();
-        $curlHttpClient = new CurlHttpClient();
-
-        $api = new Api($question, $logger, $curlHttpClient, $token);
-        $res = $api->makeCurlRequest();
-        $markdown = $markdowner->print($res);
+            $api = new Api($question, $logger, $curlHttpClient, $token);
+            $res = $api->makeCurlRequest();
+            $markdowner = new Markdowner();
+            $markdown = $markdowner->print($res);
+        }
+        include __DIR__ . "/views/homeView.php";
     }
-    include __DIR__ . "/views/homeView.php";
-    break;
+);
 
-case '/blog':
-    $post = new Post();
-    $allPosts = $post->getAll();
-    include __DIR__ . "/views/blogView.php";
-    break;
+$router->get(
+    '/blog', function () {
+        $post = new Post();
+        $publishedPosts = $post->getPublished();
+        include __DIR__ . "/views/blogView.php";
+    }
+);
 
-case '/admin':
-    if (!$_SESSION["username"]) {
-        header("Location: /");
+
+$router->get(
+    '/admin', function () {
+        if (!$_SESSION["username"]) {
+            header("Location: /");
+            exit;
+        }
+
+        $post = new Post();
+
+        $allPosts = $post->getAll();
+
+        include __DIR__ . "/views/adminView.php";
+    }
+);
+
+$router->get(
+    '/delete-post', function () {
+        if (!$_SESSION["username"]) {
+            header("Location: /");
+            exit;
+        }
+
+        $idOfPostToDelete = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+
+        if (!$idOfPostToDelete) {
+            throw new \InvalidArgumentException("Invalid input");
+        }
+
+        $postObj = new Post();
+
+        if (!$postObj->getById($idOfPostToDelete)) {
+            $_SESSION["message"]["message"] = "No such post.";
+            $_SESSION["message"]["status"] = "error";
+            header("Location: /admin");
+            exit;
+        }
+
+        $postObj->delete($idOfPostToDelete);
+        $_SESSION["message"]["message"] = "Post $idOfPostToDelete deleted";
+        $_SESSION["message"]["status"] = "success";
+        header("Location: /admin");
         exit;
     }
-    include __DIR__ . "/views/adminView.php";
-    break;
+);
 
-case '/login':
-    $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-    $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+$router->post(
+    '/add-post', function () {
+        if (!$_SESSION["username"]) {
+            header("Location: /");
+            exit;
+        }
 
-    $user = new User();
-    if (isset($email) && $email != "") {
+        $question = filter_input(INPUT_POST, 'question', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $date = filter_input(INPUT_POST, 'date', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $time = filter_input(INPUT_POST, 'time', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+        $publishUnixTimestamp = strtotime($date . " " . $time);
+
+        $post = new Post();
+
+        if (!$post->isValidUnixTimestamp($publishUnixTimestamp)) {
+            throw new \Exception("Invalid timestamp.");
+        }
+
+        $post->add($_SESSION["user_id"], $question, "", $publishUnixTimestamp);
+        $_SESSION["message"]["message"] = "Post scheduled";
+        $_SESSION["message"]["status"] = "success";
+        header("Location: /admin");
+    }
+);
+
+$router->get(
+    '/login', function () {
+        include __DIR__ . "/views/loginView.php";
+    }
+);
+
+$router->post(
+    '/login', function () {
+        $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+        $user = new User();
+        if (!isset($email) || $email === "") {
+            throw new \InvalidArgumentException("Invalid input");
+        }
+
         $userData = $user->getByEmail(trim($email));
         if (count($userData)) {
             if (password_verify(trim($password), $userData["password"])) {
                 $user->login($userData["id"], $userData["name"]);
-            } else {
-                echo "<br>Could not login, check your password.";
+                return;
             }
-        } else {
-            echo "<br>Could not find that user.";
-        };
+            $_SESSION["message"]["message"] = "Could not login, check your password.";
+            $_SESSION["message"]["status"] = "error";
+            include __DIR__ . "/views/loginView.php";
+            return;
+        }
+        $_SESSION["message"]["message"] = "Could not find that user.";
+        $_SESSION["message"]["status"] = "error";
+        include __DIR__ . "/views/loginView.php";
+        return;
     }
+);
 
-    include __DIR__ . "/views/loginView.php";
-    break;
+$router->get(
+    '/logout', function () {
+        $user = new User();
+        $user->logout();
+    }
+);
 
-case '/logout':
-    $user = new User();
-    $user->logout();
-    break;
+$method = $_SERVER['REQUEST_METHOD'];
+$uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
-default:
-    http_response_code(404);
-    echo '404 Not Found';
+try {
+    echo $router->dispatch($method, $uri);
+} catch (\Exception $e) {
+    $logger = new Logger();
+    $logger->log($e);
+    http_response_code(500);
+    echo "500 Internal Server Error";
 }
 
 exit;

@@ -25,6 +25,9 @@
         "phpmd/phpmd" : "@stable"
     },
     "scripts": {
-        "test": "./tests.sh"
+        "test": "./tests.sh",
+        "post-install-cmd": [
+            "cp ./tests.sh .git/hooks/pre-commit"
+        ]
     }
 }
