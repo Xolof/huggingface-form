@@ -1,5 +1,7 @@
 # Huggingface AI form
 
+[![PHP Composer](https://github.com/Xolof/huggingface-form/actions/workflows/php.yml/badge.svg)](https://github.com/Xolof/huggingface-form/actions/workflows/php.yml)
+
 A simple PHP application with a form talking to a LLM through Huggingface's API.
 
 ## Install
