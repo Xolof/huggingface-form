@@ -1,4 +1,4 @@
-<h3>Schedule a post.</h3>
+<h3>Schedule a post for the blog.</h3>
 <form action="/add-post" method="POST">
     <label for="question">Question for the AI:</label>
     <br>
