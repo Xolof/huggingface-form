@@ -23,7 +23,7 @@ class Post
         return $this->db->runQuery("SELECT * FROM posts WHERE post != '' ORDER BY publish_unix_timestamp DESC");
     }
 
-    public function getById(int $id): array
+    public function getById(int $id): array|bool
     {
         $this->db->connect();
         return $this->db->runQueryWithParams("SELECT * FROM posts WHERE post_id=:post_id", [":post_id"], [$id], true);
