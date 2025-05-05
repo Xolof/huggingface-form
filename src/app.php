@@ -64,9 +64,40 @@ $router->get(
         }
 
         $post = new Post();
+
         $allPosts = $post->getAll();
 
         include __DIR__ . "/views/adminView.php";
+    }
+);
+
+$router->get(
+    '/delete-post', function () {
+        if (!$_SESSION["username"]) {
+            header("Location: /");
+            exit;
+        }
+
+        $idOfPostToDelete = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+
+        if (!$idOfPostToDelete) {
+            throw new \InvalidArgumentException("Invalid input");
+        }
+
+        $postObj = new Post();
+
+        if (!$postObj->getById($idOfPostToDelete)) {
+            $_SESSION["message"]["message"] = "No such post.";
+            $_SESSION["message"]["status"] = "error";
+            header("Location: /admin");
+            exit;
+        }
+
+        $postObj->delete($idOfPostToDelete);
+        $_SESSION["message"]["message"] = "Post $idOfPostToDelete deleted";
+        $_SESSION["message"]["status"] = "success";
+        header("Location: /admin");
+        exit;
     }
 );
 
