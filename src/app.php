@@ -169,6 +169,13 @@ $router->get(
 $method = $_SERVER['REQUEST_METHOD'];
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
-echo $router->dispatch($method, $uri);
+try {
+    echo $router->dispatch($method, $uri);
+} catch (\Exception $e) {
+    $logger = new Logger();
+    $logger->log($e);
+    http_response_code(500);
+    echo "500 Internal Server Error";
+}
 
 exit;
