@@ -6,6 +6,7 @@ use App\Helpers\Logger;
 use App\Models\Api;
 use App\Clients\CurlHttpClient;
 use App\Helpers\Markdowner;
+use \Exception;
 
 class HomeController extends Controller
 {
@@ -16,7 +17,7 @@ class HomeController extends Controller
 
             $token = $_ENV["HF_API_TOKEN"];
             if (!$token) {
-                throw new \Exception("Could not get the API token.");
+                throw new Exception("Could not get the API token.");
             };
 
             $logger = new Logger();

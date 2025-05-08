@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\User;
+use \InvalidArgumentException;
 
 class AuthenticationController extends Controller
 {
@@ -13,7 +14,7 @@ class AuthenticationController extends Controller
 
         $user = new User();
         if (!isset($email) || $email === "") {
-            throw new \InvalidArgumentException("Invalid input");
+            throw new InvalidArgumentException("Invalid input");
         }
 
         $userData = $user->getByEmail(trim($email));

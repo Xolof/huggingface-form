@@ -3,6 +3,8 @@
 namespace App\Controllers;
 
 use App\Models\Post;
+use \Exception;
+use \InvalidArgumentException;
 
 class AdminController extends Controller
 {
@@ -30,7 +32,7 @@ class AdminController extends Controller
         $idOfPostToDelete = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 
         if (!$idOfPostToDelete) {
-            throw new \InvalidArgumentException("Invalid input");
+            throw new InvalidArgumentException("Invalid input");
         }
 
         $postObj = new Post();
@@ -65,7 +67,7 @@ class AdminController extends Controller
         $post = new Post();
 
         if (!$post->isValidUnixTimestamp($publishUnixTimestamp)) {
-            throw new \Exception("Invalid timestamp.");
+            throw new Exception("Invalid timestamp.");
         }
 
         $post->add($_SESSION["user_id"], $question, "", $publishUnixTimestamp);
