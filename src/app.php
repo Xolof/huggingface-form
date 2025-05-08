@@ -5,7 +5,7 @@ declare(strict_types=1);
 require __DIR__ . '/../vendor/autoload.php';
 
 use App\Helpers\Logger;
-use App\Router;
+use App\Routers\Router;
 use App\Controllers\BlogController;
 use App\Controllers\HomeController;
 use App\Controllers\AdminController;
