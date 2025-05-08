@@ -20,8 +20,6 @@ if (session_status() != 2) {
     session_start();
 }
 
-$uri = $_SERVER['REQUEST_URI'];
-
 $router = new Router();
 
 $router->get('/', [HomeController::class, "home"]);
