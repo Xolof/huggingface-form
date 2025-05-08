@@ -41,5 +41,3 @@ try {
     http_response_code(500);
     echo "500 Internal Server Error";
 }
-
-exit;
