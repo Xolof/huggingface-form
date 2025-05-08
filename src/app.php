@@ -37,8 +37,7 @@ $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 try {
     echo $router->dispatch($method, $uri);
 } catch (\Exception $e) {
-    $logger = new Logger();
-    $logger->log($e);
+    Logger::log($e);
     http_response_code(500);
     echo "500 Internal Server Error";
 }

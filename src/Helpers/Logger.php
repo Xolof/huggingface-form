@@ -4,7 +4,7 @@ namespace App\Helpers;
 
 class Logger
 {
-    public function log(mixed $object): void
+    public static function log(mixed $object): void
     {
         if (gettype($object) !== "string" && get_class($object) === "stdClass") {
             $object = json_encode($object);
