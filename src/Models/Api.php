@@ -4,7 +4,6 @@ namespace App\Models;
 
 use App\Helpers\Logger;
 use App\Exceptions\CurlErrorException;
-use App\Clients\CurlHttpClient;
 use App\Interfaces\HttpClientInterface;
 use Exception;
 
