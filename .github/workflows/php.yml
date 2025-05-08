@@ -1,8 +1,8 @@
-name: PHP Composer
+name: Tests
 
 on:
   push:
-    branches: [ "develop", "github-workflow" ]
+    branches: [ "develop" ]
   pull_request:
     branches: [ "master" ]
 
