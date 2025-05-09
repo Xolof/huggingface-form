@@ -10,6 +10,13 @@ use \Exception;
 
 class HomeController extends Controller
 {
+    private Logger $logger;
+
+    public function __construct(Logger $logger)
+    {
+        $this->logger = $logger;
+    }
+
     public static function home(): void
     {
         $question = filter_input(INPUT_GET, 'question', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -20,10 +27,9 @@ class HomeController extends Controller
                 throw new Exception("Could not get the API token.");
             };
 
-            $logger = new Logger();
             $curlHttpClient = new CurlHttpClient();
 
-            $api = new Api($question, $logger, $curlHttpClient, $token);
+            $api = new Api($question, $this->logger, $curlHttpClient, $token);
             $res = $api->makeCurlRequest();
             $markdowner = new Markdowner();
             $markdown = $markdowner->print($res);
