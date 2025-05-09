@@ -8,7 +8,14 @@ use \InvalidArgumentException;
 
 class AdminController extends Controller
 {
-    public static function admin(): void
+    private $flashMessage;
+
+    public function __construct($flashMessage)
+    {
+        $this->flashMessage = $flashMessage;
+    }
+
+    public function admin(): void
     {
         if (!$_SESSION["username"]) {
             header("Location: /");
@@ -22,7 +29,7 @@ class AdminController extends Controller
         include __DIR__ . "/../views/adminView.php";
     }
 
-    public static function deletePost(): void
+    public function deletePost(): void
     {
         if (!$_SESSION["username"]) {
             header("Location: /");
@@ -38,20 +45,19 @@ class AdminController extends Controller
         $postObj = new Post();
 
         if (!$postObj->getById($idOfPostToDelete)) {
-            $_SESSION["message"]["message"] = "No such post.";
-            $_SESSION["message"]["status"] = "error";
+            $this->flashMessage->set("No such post.", "error");
             header("Location: /admin");
             exit;
         }
 
         $postObj->delete($idOfPostToDelete);
-        $_SESSION["message"]["message"] = "Post $idOfPostToDelete deleted";
-        $_SESSION["message"]["status"] = "success";
+
+        $this->flashMessage->set("Post $idOfPostToDelete deleted", "success");
         header("Location: /admin");
         exit;
     }
 
-    public static function addPost(): void
+    public function addPost(): void
     {
         if (!$_SESSION["username"]) {
             header("Location: /");
@@ -71,8 +77,7 @@ class AdminController extends Controller
         }
 
         $post->add($_SESSION["user_id"], $question, "", $publishUnixTimestamp);
-        $_SESSION["message"]["message"] = "Post scheduled";
-        $_SESSION["message"]["status"] = "success";
+        $this->flashMessage->set("Post scheduled", "success");
         header("Location: /admin");
     }
 

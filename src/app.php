@@ -10,6 +10,7 @@ use App\Controllers\BlogController;
 use App\Controllers\HomeController;
 use App\Controllers\AdminController;
 use App\Controllers\AuthenticationController;
+use App\Helpers\FlashMessage;
 
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
 $dotenv->load();
@@ -20,15 +21,38 @@ if (session_status() != 2) {
     session_start();
 }
 
+$flashMessage = new FlashMessage;
+$adminController = new AdminController($flashMessage);
+$authenticationController = new AuthenticationController($flashMessage);
+
 $router = new Router();
 
 $router->get('/', [HomeController::class, "home"]);
-$router->get('/admin', [AdminController::class, "admin"]);
-$router->get('/delete-post', [AdminController::class, "deletePost"]);
-$router->post('/add-post', [AdminController::class, "addPost"]);
-$router->get('/login', [AdminController::class, "showLoginPage"]);
-$router->post('/login', [AuthenticationController::class, "doLogin"]);
-$router->get('/logout', [AuthenticationController::class, "doLogout"]);
+
+$router->get('/admin', function () use ($adminController) {
+    $adminController->admin();
+});
+
+$router->get('/delete-post', function () use ($adminController) {
+    $adminController->deletePost();
+});
+
+$router->post('/add-post', function () use ($adminController) {
+    $adminController->addPost();
+});
+
+$router->get('/login', function () use ($adminController) {
+    $adminController->showLoginPage();
+});
+
+$router->post('/login', function () use ($authenticationController) {
+    $authenticationController->doLogin();
+});
+
+$router->get('/logout', function () use ($authenticationController) {
+    $authenticationController->doLogout();
+});
+
 $router->get('/blog', [BlogController::class, "blog"]);
 
 $method = $_SERVER['REQUEST_METHOD'];

@@ -6,6 +6,7 @@ use PHPUnit\Framework\TestCase;
 use App\Models\User;
 use App\Models\Db;
 use App\Exceptions\DatabaseQueryException;
+use \App\Helpers\FlashMessage;
 
 final class UserTest extends TestCase
 {
@@ -28,7 +29,7 @@ final class UserTest extends TestCase
 
     public function testCanCreate(): void
     {
-        $user = new User();
+        $user = new User(new Db(), new FlashMessage());
 
         $email = 'user@user.se';
         $user->create(
@@ -43,7 +44,7 @@ final class UserTest extends TestCase
     {
         $this->expectException(DatabaseQueryException::class);
 
-        $user = new User();
+        $user = new User(new Db(), new FlashMessage());
         $email = 'user@user.se';
 
         $user->create(
@@ -59,7 +60,7 @@ final class UserTest extends TestCase
 
     public function testCanGetAll(): void
     {
-        $user = new User();
+        $user = new User(new Db(), new FlashMessage());
         $allUsers = $user->getAll();
         $this->assertSame("admin", $allUsers[0]["name"]);
     }
@@ -68,7 +69,7 @@ final class UserTest extends TestCase
     {
         $email = "admin@admin.se";
 
-        $user = new User();
+        $user = new User(new Db(), new FlashMessage());
         $res = $user->getByEmail($email);
 
         $this->assertSame("admin", $res["name"]);
@@ -78,7 +79,7 @@ final class UserTest extends TestCase
     {
         $email = "invalido@test.se";
 
-        $user = new User();
+        $user = new User(new Db(), new FlashMessage());
         $res = $user->getByEmail($email);
 
         $this->assertSame([], $res);
@@ -86,14 +87,14 @@ final class UserTest extends TestCase
 
     public function testLogin(): void
     {
-        $user = new User();
+        $user = new User(new Db(), new FlashMessage());
         $user->login(5, "olof");
         $this->assertSame($_SESSION["user_id"], 5);
     }
 
     public function testLogout(): void
     {
-        $user = new User();
+        $user = new User(new Db(), new FlashMessage());
         $user->logout();
         $this->assertTrue(!isset($_SESSION["user_id"]));
     }
