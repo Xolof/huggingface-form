@@ -2,27 +2,36 @@
 
 namespace App\Controllers;
 
+use App\Helpers\FlashMessage;
 use App\Models\Post;
 use \Exception;
 use \InvalidArgumentException;
+use App\Models\Db;
 
 class AdminController extends Controller
 {
-    public static function admin(): void
+    private FlashMessage $flashMessage;
+
+    public function __construct(FlashMessage $flashMessage)
+    {
+        $this->flashMessage = $flashMessage;
+    }
+
+    public function admin(): void
     {
         if (!$_SESSION["username"]) {
             header("Location: /");
             exit;
         }
 
-        $post = new Post();
+        $post = new Post(new Db());
 
         $allPosts = $post->getAll();
 
         include __DIR__ . "/../views/adminView.php";
     }
 
-    public static function deletePost(): void
+    public function deletePost(): void
     {
         if (!$_SESSION["username"]) {
             header("Location: /");
@@ -35,23 +44,22 @@ class AdminController extends Controller
             throw new InvalidArgumentException("Invalid input");
         }
 
-        $postObj = new Post();
+        $postObj = new Post(new Db());
 
         if (!$postObj->getById($idOfPostToDelete)) {
-            $_SESSION["message"]["message"] = "No such post.";
-            $_SESSION["message"]["status"] = "error";
+            $this->flashMessage->set("No such post.", "error");
             header("Location: /admin");
             exit;
         }
 
         $postObj->delete($idOfPostToDelete);
-        $_SESSION["message"]["message"] = "Post $idOfPostToDelete deleted";
-        $_SESSION["message"]["status"] = "success";
+
+        $this->flashMessage->set("Post $idOfPostToDelete deleted", "success");
         header("Location: /admin");
         exit;
     }
 
-    public static function addPost(): void
+    public function addPost(): void
     {
         if (!$_SESSION["username"]) {
             header("Location: /");
@@ -64,19 +72,18 @@ class AdminController extends Controller
 
         $publishUnixTimestamp = strtotime($date . " " . $time);
 
-        $post = new Post();
+        $post = new Post(new Db());
 
         if (!$post->isValidUnixTimestamp($publishUnixTimestamp)) {
             throw new Exception("Invalid timestamp.");
         }
 
         $post->add($_SESSION["user_id"], $question, "", $publishUnixTimestamp);
-        $_SESSION["message"]["message"] = "Post scheduled";
-        $_SESSION["message"]["status"] = "success";
+        $this->flashMessage->set("Post scheduled", "success");
         header("Location: /admin");
     }
 
-    public static function showLoginPage(): void
+    public function showLoginPage(): void
     {
         include __DIR__ . "/../views/loginView.php";
     }

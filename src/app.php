@@ -6,6 +6,7 @@ require __DIR__ . '/../vendor/autoload.php';
 
 use App\Helpers\Logger;
 use App\Routers\Router;
+use App\Helpers\FlashMessage;
 use App\Controllers\BlogController;
 use App\Controllers\HomeController;
 use App\Controllers\AdminController;
@@ -16,20 +17,29 @@ $dotenv->load();
 
 date_default_timezone_set("Europe/Stockholm");
 
-if (session_status() != 2) {
+if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
 }
 
+$flashMessage = new FlashMessage;
+$homeController = new HomeController(new Logger());
+$blogController = new BlogController();
+$adminController = new AdminController($flashMessage);
+$authenticationController = new AuthenticationController($flashMessage);
+
 $router = new Router();
 
-$router->get('/', [HomeController::class, "home"]);
-$router->get('/admin', [AdminController::class, "admin"]);
-$router->get('/delete-post', [AdminController::class, "deletePost"]);
-$router->post('/add-post', [AdminController::class, "addPost"]);
-$router->get('/login', [AdminController::class, "showLoginPage"]);
-$router->post('/login', [AuthenticationController::class, "doLogin"]);
-$router->get('/logout', [AuthenticationController::class, "doLogout"]);
-$router->get('/blog', [BlogController::class, "blog"]);
+$router->get('/', [$homeController, 'home']);
+$router->get('/blog', [$blogController, 'blog']);
+$router->get('/admin', [$adminController, 'admin']);
+$router->post('/add-post', [$adminController, 'addPost']);
+$router->get('/delete-post', [$adminController, 'deletePost']);
+$router->get('/login', [$adminController, 'showLoginPage']);
+$router->post('/login', [$authenticationController, 'doLogin']);
+$router->get('/logout', [$authenticationController, 'doLogout']);
+$router->setNotFound(function () {
+    include __DIR__ . "/views/404.php";
+});
 
 $method = $_SERVER['REQUEST_METHOD'];
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
@@ -39,5 +49,5 @@ try {
 } catch (\Exception $e) {
     Logger::log($e);
     http_response_code(500);
-    echo "500 Internal Server Error";
+    include __DIR__ . "/views/500.php";
 }

@@ -51,10 +51,16 @@ final class RouterTest extends TestCase
 
     public function test404NotFound(): void
     {
+        $message = "My custom 404 message";
+
+        $this->router->setNotFound(function () use ($message) {
+            return $message;
+        });
+
         $method = "GET";
         $uri = parse_url("/non-existing-url", PHP_URL_PATH);
 
         $res = $this->router->dispatch($method, $uri);
-        $this->assertSame($res, "404 Not Found");
+        $this->assertSame($res, $message);
     }
 }

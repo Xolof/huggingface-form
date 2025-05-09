@@ -2,15 +2,18 @@
 
 namespace App\Models;
 
+use App\Helpers\FlashMessage;
 use App\Models\Db;
 
 class User
 {
     private Db $db;
+    private FlashMessage $flashMessage;
 
-    public function __construct()
+    public function __construct(Db $db, FlashMessage $flashMessage)
     {
-        $this->db = new Db();
+        $this->db = $db;
+        $this->flashMessage = $flashMessage;
     }
 
     public function getAll(): array
@@ -39,8 +42,7 @@ class User
         $_SESSION['user_id'] = $userId;
         $_SESSION['username'] = $userName;
 
-        $_SESSION["message"]["message"] = "Login successful.";
-        $_SESSION["message"]["status"] = "success";
+        $this->flashMessage->set("Login successful.", "success");
 
         header("Location: /admin");
     }
@@ -52,8 +54,7 @@ class User
 
         session_start();
 
-        $_SESSION["message"]["message"] = "You have been logged out.";
-        $_SESSION["message"]["status"] = "success";
+        $this->flashMessage->set("You have been logged out.", "success");
 
         header("Location: /");
     }

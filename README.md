@@ -4,6 +4,8 @@
 
 A simple PHP application with a form talking to a LLM through Huggingface's API.
 
+It's possible to log in to an admin interface where the admin can schedule questions for the AI to make blog posts from.
+
 ## Install
 
 ### Composer

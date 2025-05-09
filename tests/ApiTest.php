@@ -20,7 +20,7 @@ class ApiTest extends TestCase
         $this->logger = new Logger();
     }
 
-    public function testMakeCurlRequestReturnsApiResponse()
+    public function testMakeCurlRequestReturnsApiResponse(): void
     {
         $question = "What is PHP?";
         $hfToken = "dummy-token";
@@ -69,7 +69,7 @@ class ApiTest extends TestCase
         $this->assertEquals('PHP is a server-side scripting language.', $result);
     }
 
-    public function testMakeCurlRequestThrowsExceptionOn404()
+    public function testMakeCurlRequestThrowsExceptionOn404(): void
     {
         $question = "What is PHP?";
         $hfToken = "dummy-token";
@@ -88,7 +88,7 @@ class ApiTest extends TestCase
         $api->makeCurlRequest();
     }
 
-    public function testMakeCurlRequestHandlesHttpClientException()
+    public function testMakeCurlRequestHandlesHttpClientException(): void
     {
         $question = "What is PHP?";
         $hfToken = "dummy-token";
