@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
+use App\Helpers\FlashMessage;
+use App\Models\Db;
+
 class User
 {
-    private $db;
-    private $flashMessage;
+    private Db $db;
+    private FlashMessage $flashMessage;
 
-    public function __construct($db, $flashMessage)
+    public function __construct(Db $db, FlashMessage $flashMessage)
     {
         $this->db = $db;
         $this->flashMessage = $flashMessage;

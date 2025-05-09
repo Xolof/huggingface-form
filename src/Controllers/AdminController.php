@@ -2,15 +2,16 @@
 
 namespace App\Controllers;
 
+use App\Helpers\FlashMessage;
 use App\Models\Post;
 use \Exception;
 use \InvalidArgumentException;
 
 class AdminController extends Controller
 {
-    private $flashMessage;
+    private FlashMessage $flashMessage;
 
-    public function __construct($flashMessage)
+    public function __construct(FlashMessage $flashMessage)
     {
         $this->flashMessage = $flashMessage;
     }

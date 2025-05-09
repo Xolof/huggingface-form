@@ -4,14 +4,14 @@ namespace App\Controllers;
 
 use App\Models\User;
 use \InvalidArgumentException;
-use \App\Helpers\FlashMessage;
+use App\Helpers\FlashMessage;
 use App\Models\Db;
 
 class AuthenticationController extends Controller
 {
-    private $flashMessage;
+    private FlashMessage $flashMessage;
 
-    public function __construct($flashMessage)
+    public function __construct(FlashMessage $flashMessage)
     {
         $this->flashMessage = $flashMessage;
     }
