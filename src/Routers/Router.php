@@ -5,6 +5,7 @@ namespace App\Routers;
 class Router
 {
     private $routes = [];
+    private $notFoundFunction;
 
     public function add(string $method, string $path, callable|array $handler): void
     {
@@ -23,6 +24,16 @@ class Router
     public function post(string $path, callable|array $handler): void
     {
         $this->add('POST', $path, $handler);
+    }
+
+    public function setNotFound(callable $handler): void
+    {
+        $this->notFoundFunction = $handler;
+    }
+
+    private function getNotFound(): callable
+    {
+        return $this->notFoundFunction;
     }
 
     protected function handlerIsArray(callable|array $handler): bool
@@ -47,6 +58,6 @@ class Router
         }
 
         http_response_code(404);
-        return '404 Not Found';
+        return call_user_func($this->getNotFound());
     }
 }

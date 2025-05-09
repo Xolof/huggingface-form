@@ -37,6 +37,9 @@ $router->get('/delete-post', [$adminController, 'deletePost']);
 $router->get('/login', [$adminController, 'showLoginPage']);
 $router->post('/login', [$authenticationController, 'doLogin']);
 $router->get('/logout', [$authenticationController, 'doLogout']);
+$router->setNotFound(function () {
+    include __DIR__ . "/views/404.php";
+});
 
 $method = $_SERVER['REQUEST_METHOD'];
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
@@ -46,5 +49,5 @@ try {
 } catch (\Exception $e) {
     Logger::log($e);
     http_response_code(500);
-    echo "500 Internal Server Error";
+    include __DIR__ . "/views/500.php";
 }
