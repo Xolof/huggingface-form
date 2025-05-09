@@ -22,38 +22,14 @@ if (session_status() != 2) {
 }
 
 $flashMessage = new FlashMessage;
+$homeController = new HomeController();
 $adminController = new AdminController($flashMessage);
 $authenticationController = new AuthenticationController($flashMessage);
+$blogController = new BlogController();
 
 $router = new Router();
 
-$router->get('/', [HomeController::class, "home"]);
-
-$router->get('/admin', function () use ($adminController) {
-    $adminController->admin();
-});
-
-$router->get('/delete-post', function () use ($adminController) {
-    $adminController->deletePost();
-});
-
-$router->post('/add-post', function () use ($adminController) {
-    $adminController->addPost();
-});
-
-$router->get('/login', function () use ($adminController) {
-    $adminController->showLoginPage();
-});
-
-$router->post('/login', function () use ($authenticationController) {
-    $authenticationController->doLogin();
-});
-
-$router->get('/logout', function () use ($authenticationController) {
-    $authenticationController->doLogout();
-});
-
-$router->get('/blog', [BlogController::class, "blog"]);
+require_once __DIR__ . "/routes/web.php";
 
 $method = $_SERVER['REQUEST_METHOD'];
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);

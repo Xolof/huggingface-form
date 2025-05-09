@@ -5,3 +5,7 @@ parameters:
 	ignoreErrors:
 		- '#Call to an undefined method [a-zA-Z0-9\\_]+::expects\(\)#'
 		- '#Access to an undefined property [a-zA-Z0-9\\_]+::\$hfToken#'
+		-
+			message: '#Variable .* might not be defined#'
+			paths:
+				- src/routes/web.php
