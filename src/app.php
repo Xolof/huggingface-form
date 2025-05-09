@@ -17,7 +17,7 @@ $dotenv->load();
 
 date_default_timezone_set("Europe/Stockholm");
 
-if (session_status() != 2) {
+if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
 }
 
