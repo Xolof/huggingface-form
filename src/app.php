@@ -22,7 +22,7 @@ if (session_status() != 2) {
 }
 
 $flashMessage = new FlashMessage;
-$homeController = new HomeController();
+$homeController = new HomeController(new Logger());
 $blogController = new BlogController();
 $adminController = new AdminController($flashMessage);
 $authenticationController = new AuthenticationController($flashMessage);
