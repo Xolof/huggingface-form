@@ -82,7 +82,7 @@ class AdminController extends Controller
         header("Location: /admin");
     }
 
-    public static function showLoginPage(): void
+    public function showLoginPage(): void
     {
         include __DIR__ . "/../views/loginView.php";
     }

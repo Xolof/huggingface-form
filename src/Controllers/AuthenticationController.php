@@ -41,7 +41,7 @@ class AuthenticationController extends Controller
         return;
     }
 
-    public static function doLogout(): void
+    public function doLogout(): void
     {
         $user = new User(new Db(), new FlashMessage());
         $user->logout();

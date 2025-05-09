@@ -6,7 +6,7 @@ use App\Models\Post;
 
 class BlogController extends Controller
 {
-    public static function blog(): void
+    public function blog(): void
     {
         $post = new Post();
         $publishedPosts = $post->getPublished();

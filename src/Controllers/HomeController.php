@@ -17,7 +17,7 @@ class HomeController extends Controller
         $this->logger = $logger;
     }
 
-    public static function home(): void
+    public function home(): void
     {
         $question = filter_input(INPUT_GET, 'question', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         if (isset($question)) {
