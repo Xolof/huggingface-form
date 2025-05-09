@@ -6,11 +6,11 @@ require __DIR__ . '/../vendor/autoload.php';
 
 use App\Helpers\Logger;
 use App\Routers\Router;
+use App\Helpers\FlashMessage;
 use App\Controllers\BlogController;
 use App\Controllers\HomeController;
 use App\Controllers\AdminController;
 use App\Controllers\AuthenticationController;
-use App\Helpers\FlashMessage;
 
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
 $dotenv->load();
@@ -23,13 +23,20 @@ if (session_status() != 2) {
 
 $flashMessage = new FlashMessage;
 $homeController = new HomeController();
+$blogController = new BlogController();
 $adminController = new AdminController($flashMessage);
 $authenticationController = new AuthenticationController($flashMessage);
-$blogController = new BlogController();
 
 $router = new Router();
 
-require_once __DIR__ . "/routes/web.php";
+$router->get('/', [$homeController, 'home']);
+$router->get('/blog', [$blogController, 'blog']);
+$router->get('/admin', [$adminController, 'admin']);
+$router->post('/add-post', [$adminController, 'addPost']);
+$router->get('/delete-post', [$adminController, 'deletePost']);
+$router->get('/login', [$adminController, 'showLoginPage']);
+$router->post('/login', [$authenticationController, 'doLogin']);
+$router->get('/logout', [$authenticationController, 'doLogout']);
 
 $method = $_SERVER['REQUEST_METHOD'];
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);

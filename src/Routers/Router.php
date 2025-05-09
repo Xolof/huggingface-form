@@ -6,7 +6,7 @@ class Router
 {
     private $routes = [];
 
-    public function add($method, $path, $handler)
+    public function add(string $method, string $path, callable|array $handler): void
     {
         $this->routes[] = [
             'method' => strtoupper($method),
@@ -15,23 +15,34 @@ class Router
         ];
     }
 
-    public function get($path, $handler)
+    public function get(string $path, callable|array $handler): void
     {
         $this->add('GET', $path, $handler);
     }
 
-    public function post($path, $handler)
+    public function post(string $path, callable|array $handler): void
     {
         $this->add('POST', $path, $handler);
     }
 
-    public function dispatch($method, $uri)
+    protected function handlerIsArray(callable|array $handler): bool
+    {
+        return is_array($handler) && count($handler) === 2 && is_object($handler[0]) && is_string($handler[1]);
+    }
+
+    public function dispatch(string $method, string $uri)
     {
         $method = strtoupper($method);
 
         foreach ($this->routes as $route) {
             if ($route['method'] === $method && $route['path'] === $uri) {
-                return call_user_func($route['handler']);
+                $handler = $route['handler'];
+
+                if ($this->handlerIsArray($handler)) {
+                    return call_user_func([$handler[0], $handler[1]]);
+                }
+
+                return call_user_func($handler);
             }
         }
 
