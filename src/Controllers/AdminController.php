@@ -6,6 +6,7 @@ use App\Helpers\FlashMessage;
 use App\Models\Post;
 use \Exception;
 use \InvalidArgumentException;
+use App\Models\Db;
 
 class AdminController extends Controller
 {
@@ -23,7 +24,7 @@ class AdminController extends Controller
             exit;
         }
 
-        $post = new Post();
+        $post = new Post(new Db());
 
         $allPosts = $post->getAll();
 
@@ -43,7 +44,7 @@ class AdminController extends Controller
             throw new InvalidArgumentException("Invalid input");
         }
 
-        $postObj = new Post();
+        $postObj = new Post(new Db());
 
         if (!$postObj->getById($idOfPostToDelete)) {
             $this->flashMessage->set("No such post.", "error");
@@ -71,7 +72,7 @@ class AdminController extends Controller
 
         $publishUnixTimestamp = strtotime($date . " " . $time);
 
-        $post = new Post();
+        $post = new Post(new Db());
 
         if (!$post->isValidUnixTimestamp($publishUnixTimestamp)) {
             throw new Exception("Invalid timestamp.");

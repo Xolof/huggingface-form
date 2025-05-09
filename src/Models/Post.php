@@ -6,9 +6,9 @@ class Post
 {
     private Db $db;
 
-    public function __construct()
+    public function __construct(Db $db)
     {
-        $this->db = new Db();
+        $this->db = $db;
     }
 
     public function getAll(): array

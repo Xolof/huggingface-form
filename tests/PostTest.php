@@ -27,7 +27,7 @@ final class PostTest extends TestCase
 
     public function testCanAdd(): void
     {
-        $post = new Post();
+        $post = new Post(new Db());
         $question = "What is Sqlite?.";
         $post->add(1, $question, "", 2136015394);
         $allPosts = $post->getAll();
@@ -37,7 +37,7 @@ final class PostTest extends TestCase
 
     public function testCanGetById(): void
     {
-        $post = new Post();
+        $post = new Post(new Db());
         $id = 1;
         $res = $post->getById(1);
 
@@ -46,7 +46,7 @@ final class PostTest extends TestCase
 
     public function testCanUpdate(): void
     {
-        $post = new Post();
+        $post = new Post(new Db());
         $newQuestion = "What is a badger?";
         $newPublishTime = 2036015394;
 
@@ -64,7 +64,7 @@ final class PostTest extends TestCase
 
     public function testCanDelete(): void
     {
-        $post = new Post();
+        $post = new Post(new Db());
 
         $allPosts = $post->getAll();
         $countPostsBefore = count($allPosts);
@@ -80,7 +80,7 @@ final class PostTest extends TestCase
 
     public function testIsValidUnixTimestamp(): void
     {
-        $post = new Post();
+        $post = new Post(new Db());
 
         $this->assertTrue($post->isValidUnixTimestamp(1546015394));
         $this->assertFalse($post->isValidUnixTimestamp(-1));
