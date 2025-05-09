@@ -4,7 +4,7 @@ namespace App\Routers;
 
 class Router
 {
-    private $routes = [];
+    private array $routes = [];
     private $notFoundFunction;
 
     public function add(string $method, string $path, callable|array $handler): void
