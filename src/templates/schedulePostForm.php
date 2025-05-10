@@ -1,5 +1,7 @@
 <h3>Schedule a post for the blog.</h3>
 <form action="/add-post" method="POST">
+    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token']); ?>">
+
     <label for="question">Question for the AI:</label>
     <br>
     <input type=text required id="question" name="question">

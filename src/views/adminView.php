@@ -36,6 +36,7 @@ $allPosts = $allPosts ?? null;
 
         <td>
             <form action="delete-post" method="POST">
+                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token']); ?>">
                 <input type="hidden" name="id" id="post_id" value="<?= $post["post_id"]; ?>">
                 <input type="submit" name="delete" id="delete" value="Delete">
             </form>

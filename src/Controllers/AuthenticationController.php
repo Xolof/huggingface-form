@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Models\User;
 use \InvalidArgumentException;
 use App\Helpers\FlashMessage;
+use App\Helpers\Session;
 use App\Models\Db;
 
 class AuthenticationController extends Controller
@@ -30,6 +31,7 @@ class AuthenticationController extends Controller
         if (count($userData)) {
             if (password_verify(trim($password), $userData["password"])) {
                 $user->login($userData["id"], $userData["name"]);
+                Session::createCsrfToken();
                 return;
             }
             $this->flashMessage->set("Invalid password", "error");
