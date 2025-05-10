@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Helpers\FlashMessage;
+use App\Helpers\Session;
 use App\Models\Db;
 
 class User
@@ -34,10 +35,8 @@ class User
 
     public function login(int $userId, string $userName): void
     {
-        session_unset();
-        session_destroy();
-
-        session_start();
+        Session::destroy();
+        Session::start();
 
         $_SESSION['user_id'] = $userId;
         $_SESSION['username'] = $userName;
@@ -49,10 +48,8 @@ class User
 
     public function logout(): void
     {
-        session_unset();
-        session_destroy();
-
-        session_start();
+        Session::destroy();
+        Session::start();
 
         $this->flashMessage->set("You have been logged out.", "success");
 

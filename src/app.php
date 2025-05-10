@@ -7,6 +7,7 @@ require __DIR__ . '/../vendor/autoload.php';
 use App\Helpers\Logger;
 use App\Routers\Router;
 use App\Helpers\FlashMessage;
+use App\Helpers\Session;
 use App\Controllers\BlogController;
 use App\Controllers\HomeController;
 use App\Controllers\AdminController;
@@ -17,9 +18,7 @@ $dotenv->load();
 
 date_default_timezone_set("Europe/Stockholm");
 
-if (session_status() !== PHP_SESSION_ACTIVE) {
-    session_start();
-}
+Session::start();
 
 $flashMessage = new FlashMessage;
 $homeController = new HomeController(new Logger());
@@ -33,7 +32,7 @@ $router->get('/', [$homeController, 'home']);
 $router->get('/blog', [$blogController, 'blog']);
 $router->get('/admin', [$adminController, 'admin']);
 $router->post('/add-post', [$adminController, 'addPost']);
-$router->get('/delete-post', [$adminController, 'deletePost']);
+$router->post('/delete-post', [$adminController, 'deletePost']);
 $router->get('/login', [$adminController, 'showLoginPage']);
 $router->post('/login', [$authenticationController, 'doLogin']);
 $router->get('/logout', [$authenticationController, 'doLogout']);

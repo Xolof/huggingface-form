@@ -4,9 +4,10 @@ namespace App\Controllers;
 
 use App\Helpers\FlashMessage;
 use App\Models\Post;
-use \Exception;
 use \InvalidArgumentException;
 use App\Models\Db;
+use App\Helpers\Session;
+use \Exception;
 
 class AdminController extends Controller
 {
@@ -38,7 +39,7 @@ class AdminController extends Controller
             exit;
         }
 
-        $idOfPostToDelete = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+        $idOfPostToDelete = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
 
         if (!$idOfPostToDelete) {
             throw new InvalidArgumentException("Invalid input");
@@ -48,6 +49,7 @@ class AdminController extends Controller
 
         if (!$postObj->getById($idOfPostToDelete)) {
             $this->flashMessage->set("No such post.", "error");
+            Session::createCsrfToken();
             header("Location: /admin");
             exit;
         }
@@ -80,6 +82,7 @@ class AdminController extends Controller
 
         $post->add($_SESSION["user_id"], $question, "", $publishUnixTimestamp);
         $this->flashMessage->set("Post scheduled", "success");
+        Session::createCsrfToken();
         header("Location: /admin");
     }
 

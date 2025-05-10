@@ -2,6 +2,8 @@
 
 namespace App\Routers;
 
+use \Exception;
+
 class Router
 {
     private array $routes = [];
@@ -44,6 +46,12 @@ class Router
     public function dispatch(string $method, string $uri)
     {
         $method = strtoupper($method);
+
+        if ($method === 'POST') {
+            if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+                throw new Exception("Invalid CSRF token");
+            }
+        }
 
         foreach ($this->routes as $route) {
             if ($route['method'] === $method && $route['path'] === $uri) {

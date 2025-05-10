@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
 use App\Routers\Router;
+use App\Helpers\Session;
 
 final class RouterTest extends TestCase
 {
@@ -44,6 +45,10 @@ final class RouterTest extends TestCase
 
         $method = "POST";
         $uri = parse_url("/my-endpoint", PHP_URL_PATH);
+
+        Session::start();
+
+        $_POST["csrf_token"] = $_SESSION["csrf_token"];
 
         $res = $this->router->dispatch($method, $uri);
         $this->assertSame($res, "POST request received");
