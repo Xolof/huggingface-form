@@ -8,6 +8,7 @@ use App\Helpers\Logger;
 use App\Models\Api;
 use App\Models\Post;
 use App\Clients\CurlHttpClient;
+use \Exception;
 
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
 $dotenv->load();

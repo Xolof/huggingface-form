@@ -2,6 +2,8 @@
 
 namespace App\Routers;
 
+use \Exception;
+
 class Router
 {
     private array $routes = [];
@@ -47,7 +49,7 @@ class Router
 
         if ($method === 'POST') {
             if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
-                throw new \Exception("Invalid CSRF token");
+                throw new Exception("Invalid CSRF token");
             }
         }
 

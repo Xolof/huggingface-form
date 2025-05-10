@@ -4,10 +4,10 @@ namespace App\Controllers;
 
 use App\Helpers\FlashMessage;
 use App\Models\Post;
-use \Exception;
 use \InvalidArgumentException;
 use App\Models\Db;
 use App\Helpers\Session;
+use \Exception;
 
 class AdminController extends Controller
 {
