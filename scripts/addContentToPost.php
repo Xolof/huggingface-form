@@ -7,6 +7,7 @@ use App\Helpers\Markdowner;
 use App\Helpers\Logger;
 use App\Models\Api;
 use App\Models\Post;
+use App\Models\Db;
 use App\Clients\CurlHttpClient;
 use \Exception;
 
@@ -22,7 +23,7 @@ $logger = new Logger();
 $curlHttpClient = new CurlHttpClient();
 $markdowner = new Markdowner();
 
-$postObject = new Post();
+$postObject = new Post(new Db());
 $publishedPosts = $postObject->getAll();
 
 date_default_timezone_set("Europe/Stockholm");
