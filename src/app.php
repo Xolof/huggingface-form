@@ -33,7 +33,7 @@ $router->get('/', [$homeController, 'home']);
 $router->get('/blog', [$blogController, 'blog']);
 $router->get('/admin', [$adminController, 'admin']);
 $router->post('/add-post', [$adminController, 'addPost']);
-$router->get('/delete-post', [$adminController, 'deletePost']);
+$router->post('/delete-post', [$adminController, 'deletePost']);
 $router->get('/login', [$adminController, 'showLoginPage']);
 $router->post('/login', [$authenticationController, 'doLogin']);
 $router->get('/logout', [$authenticationController, 'doLogout']);

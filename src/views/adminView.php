@@ -33,7 +33,13 @@ $allPosts = $allPosts ?? null;
         <td><?= $post["question"]; ?></td>
         <td><?= $post["post"] === "" ? "No" : "Yes"; ?></td>
         <td><?= date("Y-m-d H:i", $post["publish_unix_timestamp"]); ?></td>
-        <td><a href="/delete-post?id=<?= $post["post_id"]; ?>">Delete</a></td>
+
+        <td>
+            <form action="delete-post" method="POST">
+                <input type="hidden" name="id" id="post_id" value="<?= $post["post_id"]; ?>">
+                <input type="submit" name="delete" id="delete" value="Delete">
+            </form>
+        </td>
     </tr>
 <?php endforeach; ?>
 </table>

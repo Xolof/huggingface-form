@@ -38,7 +38,7 @@ class AdminController extends Controller
             exit;
         }
 
-        $idOfPostToDelete = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+        $idOfPostToDelete = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
 
         if (!$idOfPostToDelete) {
             throw new InvalidArgumentException("Invalid input");
