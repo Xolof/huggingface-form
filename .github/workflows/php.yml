@@ -47,10 +47,10 @@ jobs:
       run: vendor/bin/phpcbf src tests
 
     - name: Run PhpMd src dir
-      run: vendor/bin/phpmd src text cleancode
+      run: vendor/bin/phpmd src text phpmd.xml
 
     - name: Run PhpMd tests dir
-      run: vendor/bin/phpmd tests text cleancode
+      run: vendor/bin/phpmd tests text phpmd.xml
 
     - name: Run PhpStan
       run: vendor/bin/phpstan analyse src tests --memory-limit="512M" --level=5
