@@ -11,7 +11,7 @@
     <h1>AI form</h1>
     <?php
     $loggedInUser = $_SESSION["username"] ?? null;
-    $uri = $uri ?? null;
+    $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
     ?>
     <nav class="main_nav">
         <ul>
