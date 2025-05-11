@@ -7,22 +7,22 @@ use App\Helpers\Markdowner;
 use App\Helpers\Logger;
 use App\Models\Api;
 use App\Models\Post;
+use App\Models\Db;
 use App\Clients\CurlHttpClient;
-use \Exception;
 
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
 $dotenv->load();
 
 $token = $_ENV["HF_API_TOKEN"];
 if (!$token) {
-    throw new Exception("Could not get the API token.");
+    throw new \Exception("Could not get the API token.");
 };
 
 $logger = new Logger();
 $curlHttpClient = new CurlHttpClient();
 $markdowner = new Markdowner();
 
-$postObject = new Post();
+$postObject = new Post(new Db());
 $publishedPosts = $postObject->getAll();
 
 date_default_timezone_set("Europe/Stockholm");
