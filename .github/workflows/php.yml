@@ -99,7 +99,7 @@ jobs:
           username: ${{ secrets.DEPLOY_USER }}
           key: ${{ secrets.DEPLOY_KEY }}
           script: |
-            chown -R ${{ secrets.DEPLOY_USER }}:www-data ${{ secrets.DEPLOY_PATH }}
+            chown -R ${{ secrets.DEPLOY_USER }}:${{ secrets.WEB_USER }} ${{ secrets.DEPLOY_PATH }}
             chmod 775 ${{ secrets.DEPLOY_PATH }}
             chmod 664 ${{ secrets.DEPLOY_PATH }}huggingface.log
             chmod 664 ${{ secrets.DEPLOY_PATH }}test.db
