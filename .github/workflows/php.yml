@@ -100,6 +100,5 @@ jobs:
           key: ${{ secrets.DEPLOY_KEY }}
           script: |
             chown -R ${{ secrets.DEPLOY_USER }}:${{ secrets.WEB_USER }} ${{ secrets.DEPLOY_PATH }}
-            chmod 775 ${{ secrets.DEPLOY_PATH }}
-            chmod 664 ${{ secrets.DEPLOY_PATH }}huggingface.log
-            chmod 664 ${{ secrets.DEPLOY_PATH }}test.db
+            find ${{ secrets.DEPLOY_PATH }}  -type d -exec chmod 770 {} \;
+            find ${{ secrets.DEPLOY_PATH }}  -type f -exec chmod 660 {} \;
