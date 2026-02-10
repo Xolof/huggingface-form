@@ -24,7 +24,7 @@ class ApiTest extends TestCase
     {
         $question = "What is PHP?";
         $hfToken = "dummy-token";
-        $url = "https://router.huggingface.co/nebius/v1/chat/completions";
+        $url = "https://router.huggingface.co/scaleway/v1/chat/completions";
         $mockResponse = json_encode(
             [
                 'choices' => [
@@ -73,7 +73,7 @@ class ApiTest extends TestCase
     {
         $question = "What is PHP?";
         $hfToken = "dummy-token";
-        $url = "https://router.huggingface.co/nebius/v1/chat/completions";
+        $url = "https://router.huggingface.co/scaleway/v1/chat/completions";
         $mockResponse = json_encode(['code' => 404, 'error' => 'Not found']);
 
         $this->mockHttpClient->expects($this->once())
@@ -92,7 +92,7 @@ class ApiTest extends TestCase
     {
         $question = "What is PHP?";
         $hfToken = "dummy-token";
-        $url = "https://router.huggingface.co/nebius/v1/chat/completions";
+        $url = "https://router.huggingface.co/scaleway/v1/chat/completions";
         $exceptionMessage = "Network error";
 
         $this->mockHttpClient->expects($this->once())
