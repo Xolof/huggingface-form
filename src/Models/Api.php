@@ -9,7 +9,7 @@ use Exception;
 
 class Api
 {
-    private string $url = "https://router.huggingface.co/nebius/v1/chat/completions";
+    private string $url = "https://router.huggingface.co/scaleway/v1/chat/completions";
     private string $question;
     private Logger $logger;
     private HttpClientInterface $httpClient;
