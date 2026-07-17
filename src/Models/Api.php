@@ -9,7 +9,6 @@ use Exception;
 
 class Api
 {
-    private string $url = "https://router.huggingface.co/nebius/v1/chat/completions";
     private string $question;
     private Logger $logger;
     private HttpClientInterface $httpClient;
@@ -29,6 +28,12 @@ class Api
 
     private function getPayload(): array
     {
+
+        $llmModel = $_ENV["LLM_MODEL"];
+        if (!$llmModel) {
+            throw new Exception("Could not get the LLM Model.");
+        };
+
         return [
             "messages" => [
                 [
@@ -36,13 +41,18 @@ class Api
                     "content" => $this->question
                 ]
             ],
-            "model" => "google/gemma-3-27b-it",
+            "model" => $llmModel,
             "stream" => false
         ];
     }
 
     public function makeCurlRequest(): string
     {
+        $llmUrl = $_ENV["LLM_URL"];
+        if (!$llmUrl) {
+            throw new Exception("Could not get the LLM URL.");
+        };
+
         $data = $this->getPayload();
         $headers = [
             "Authorization: Bearer $this->hfToken",
@@ -50,7 +60,7 @@ class Api
         ];
 
         try {
-            $response = $this->httpClient->post($this->url, $headers, $data);
+            $response = $this->httpClient->post($llmUrl, $headers, $data);
             $decodedResponse = json_decode($response, false, 512, JSON_THROW_ON_ERROR);
         } catch (Exception $e) {
             $this->logger->log("Something went wrong when trying to make a call to the API: " . $e->getMessage());
