@@ -22,9 +22,19 @@ class ApiTest extends TestCase
 
     public function testMakeCurlRequestReturnsApiResponse(): void
     {
+        $llmModel = $_ENV["LLM_MODEL"];
+        if (!$llmModel) {
+            throw new Exception("Could not get the LLM Model.");
+        };
+
+        $llmUrl = $_ENV["LLM_URL"];
+        if (!$llmUrl) {
+            throw new Exception("Could not get the LLM URL.");
+        };
+
         $question = "What is PHP?";
         $hfToken = "dummy-token";
-        $url = "https://router.huggingface.co/nebius/v1/chat/completions";
+        $url = $llmUrl;
         $mockResponse = json_encode(
             [
                 'choices' => [
@@ -55,7 +65,7 @@ class ApiTest extends TestCase
                                 "content" => $question
                             ]
                         ],
-                        "model" => "google/gemma-3-27b-it",
+                        "model" => $llmModel,
                         "stream" => false
                     ]
                 )

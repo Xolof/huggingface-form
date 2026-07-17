@@ -23,7 +23,9 @@
     </source>
 
     <php>
-        <env name="SQLITE_DB_PATH" value="./test.db" force="true"/>
+      <env name="SQLITE_DB_PATH" value="./test.db" force="true"/>
+      <env name="LLM_MODEL" value="thinkingmachines/Inkling:together"/>
+      <env name="LLM_URL" value="https://router.huggingface.co/v1/chat/completions"/>
     </php>
 
 </phpunit>

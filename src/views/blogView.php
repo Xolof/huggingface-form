@@ -8,7 +8,7 @@ $publishedPosts = $publishedPosts ?? [];
 
 <h2>Blog</h2>
 
-<p>Automatically published content written by the LLM "Google Gemma 3 27b it"</p>
+<p>Automatically published content written by LLMs</p>
 
 <?php if (count($publishedPosts) < 1) : ?>
     <p>There are not yet any posts.</p>
